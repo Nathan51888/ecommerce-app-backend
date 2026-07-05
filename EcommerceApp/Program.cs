@@ -1,6 +1,5 @@
 using EcommerceApp.Data;
 using EcommerceApp.Features.Product.Services;
-using EcommerceApp.Features.Products.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Scalar.AspNetCore;
@@ -25,13 +24,13 @@ try
         lc.ReadFrom.Configuration(builder.Configuration);
         lc.ReadFrom.Services(services);
     });
-    
+
     // Json
     builder.Services.AddControllers().AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });
-    
+
     // DB
     builder.Services.AddDbContext<AppDbContext>(options =>
     {
@@ -42,7 +41,7 @@ try
     // Services
     builder.Services.AddScoped<IProductService, ProductService>();
 
-    
+
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
@@ -60,7 +59,9 @@ try
 
     app.Run();
 }
-catch (Exception ex) when (ex is not HostAbortedException && ex.Source != "Microsoft.EntityFrameworkCore.Design") // see https://github.com/dotnet/efcore/issues/29923
+catch (Exception ex) when
+    (ex is not HostAbortedException &&
+     ex.Source != "Microsoft.EntityFrameworkCore.Design") // see https://github.com/dotnet/efcore/issues/29923
 {
     Log.Fatal(ex, "Server terminated unexpectedly");
 }

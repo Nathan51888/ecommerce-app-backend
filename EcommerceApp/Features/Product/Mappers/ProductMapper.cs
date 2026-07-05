@@ -14,7 +14,7 @@ public static class ProductMapper
             PriceRegular = dto.PriceRegular,
             PriceDiscount = dto.PriceDiscount,
             StockAmount = dto.StockAmount,
-            Category = dto.Category,
+            Category = dto.Category
         };
     }
 

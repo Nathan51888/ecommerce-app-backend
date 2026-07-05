@@ -2,7 +2,6 @@ using EcommerceApp.Data;
 using EcommerceApp.Features.Product.Mappers;
 using EcommerceApp.Features.Products.DTOs;
 using EcommerceApp.Features.Products.Models;
-using EcommerceApp.Features.Products.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Features.Product.Services;
@@ -10,11 +9,12 @@ namespace EcommerceApp.Features.Product.Services;
 public class ProductService : IProductService
 {
     private readonly AppDbContext _context;
+
     public ProductService(AppDbContext context)
     {
         _context = context;
     }
-    
+
     public async Task<List<ProductItemModel>> GetAllAsync()
     {
         var items = await _context.ProductItems.ToListAsync();
@@ -59,7 +59,7 @@ public class ProductService : IProductService
 
         _context.ProductItems.Remove(item);
         await _context.SaveChangesAsync();
-        
+
         return item;
     }
 }

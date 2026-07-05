@@ -9,10 +9,10 @@ public class AppDbContext : DbContext
     {
     }
 
+    public DbSet<ProductItemModel> ProductItems => Set<ProductItemModel>();
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
     }
-
-    public DbSet<ProductItemModel> ProductItems => Set<ProductItemModel>();
 }

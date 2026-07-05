@@ -1,7 +1,6 @@
 using EcommerceApp.Features.Product.Mappers;
+using EcommerceApp.Features.Product.Services;
 using EcommerceApp.Features.Products.DTOs;
-using EcommerceApp.Features.Products.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceApp.Features.Product.Controllers;
@@ -11,6 +10,7 @@ namespace EcommerceApp.Features.Product.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly IProductService _service;
+
     public ProductController(IProductService service)
     {
         _service = service;
@@ -36,7 +36,7 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> Create([FromBody] ProductCreateRequestDto requestDto)
     {
         var item = await _service.CreateAsync(requestDto);
-        return CreatedAtAction(nameof(GetById), new {id = item.Id}, item.ToResponseDto());
+        return CreatedAtAction(nameof(GetById), new { id = item.Id }, item.ToResponseDto());
     }
 
     [HttpPut]
