@@ -14,4 +14,5 @@ public class AppDbContext : DbContext
         base.OnConfiguring(optionsBuilder);
     }
 
+    public DbSet<ProductItemModel> ProductItems => Set<ProductItemModel>();
 }
