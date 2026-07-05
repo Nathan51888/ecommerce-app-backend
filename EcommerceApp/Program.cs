@@ -1,4 +1,5 @@
 using EcommerceApp.Data;
+using EcommerceApp.Features.Order.Services;
 using EcommerceApp.Features.Product.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -40,6 +41,7 @@ try
 
     // Services
     builder.Services.AddScoped<IProductService, ProductService>();
+    builder.Services.AddScoped<IOrderService, OrderService>();
 
 
     var app = builder.Build();
