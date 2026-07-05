@@ -130,12 +130,29 @@ public class ProductEndpointIntegrationTests : BaseIntegrationTest
     public async Task DeleteById()
     {
         // Arrange
-        var id = 2;
+        var postReq = _productGenerator.Generate();
+        var postReqExpected = new ProductResponseDto
+        {
+            Id = 0,
+            Name = postReq.Name,
+            Description = postReq.Description,
+            PriceRegular = postReq.PriceRegular,
+            PriceDiscount = postReq.PriceDiscount,
+            StockAmount = postReq.StockAmount,
+            Category = postReq.Category
+        };
 
+        var postRes = await HttpClient.PostAsJsonAsync(ProductConstants.ProductEndpoint, postReq);
+        var postResContent = await postRes.Content.ReadFromJsonAsync<ProductResponseDto>();
+
+        postRes.StatusCode.Should().Be(HttpStatusCode.Created);
+        postResContent.Should().BeEquivalentTo(postReqExpected, opt => opt.Excluding(x => x.Id));
+        postReqExpected.Id = postResContent.Id;
+        
         // Act
-        var res = await HttpClient.DeleteAsync($"{ProductConstants.ProductEndpoint}/{id}");
+        var res = await HttpClient.DeleteAsync($"{ProductConstants.ProductEndpoint}/{postReqExpected.Id}");
 
         // Assert
-        res.StatusCode.Should().Be(HttpStatusCode.OK);
+        res.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 }

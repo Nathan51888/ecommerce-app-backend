@@ -55,6 +55,11 @@ public class ProductService : IProductService
 
     public async Task<ProductItemModel?> DeleteByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var item = await _context.ProductItems.FirstOrDefaultAsync(item => item.Id == id);
+
+        _context.ProductItems.Remove(item);
+        await _context.SaveChangesAsync();
+        
+        return item;
     }
 }

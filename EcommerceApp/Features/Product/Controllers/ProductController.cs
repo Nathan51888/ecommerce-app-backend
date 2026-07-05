@@ -51,6 +51,7 @@ public class ProductController : ControllerBase
     [Route("{id:int}")]
     public async Task<IActionResult> DeleteById([FromRoute] int id)
     {
-        return Ok();
+        var item = await _service.DeleteByIdAsync(id);
+        return NoContent();
     }
 }
