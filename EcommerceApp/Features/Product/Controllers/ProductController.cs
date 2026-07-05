@@ -19,7 +19,9 @@ public class ProductController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok();
+        var items = await _service.GetAllAsync();
+        var itemsDto = items.Select(item => item.ToResponseDto()).ToList();
+        return Ok(itemsDto);
     }
 
     [HttpGet]

@@ -27,44 +27,6 @@ public class ProductEndpointIntegrationTests : BaseIntegrationTest
             .UseSeed(1000);
 
     [Fact]
-    public async Task GetAll()
-    {
-        // Arrange
-        var expected = new List<ProductItemModel>()
-        {
-            new ProductItemModel
-            {
-                Id = 0,
-                Name = "name1",
-                Description = "description1",
-                PriceRegular = 0,
-                PriceDiscount = 0,
-                StockAmount = 0,
-                Category = "cat1"
-            }
-        };
-        
-        // Act
-        var res = await HttpClient.GetAsync(ProductConstants.ProductEndpoint);
-
-        // Assert
-        res.StatusCode.Should().Be(HttpStatusCode.OK);
-    }
-    
-    [Fact]
-    public async Task GetById()
-    {
-        // Arrange
-        var id = 2;
-        
-        // Act
-        var res = await HttpClient.GetAsync($"{ProductConstants.ProductEndpoint}/{2}");
-
-        // Assert
-        res.StatusCode.Should().Be(HttpStatusCode.OK);
-    }
-    
-    [Fact]
     public async Task Create()
     {
         // Arrange
@@ -87,6 +49,47 @@ public class ProductEndpointIntegrationTests : BaseIntegrationTest
         // Assert
         res.StatusCode.Should().Be(HttpStatusCode.Created);
         resContent.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.Id));
+    }
+    
+    [Fact]
+    public async Task GetAll()
+    {
+        // Arrange
+        var postReqList = new List<ProductItemModel>()
+        {
+            _productGenerator.Generate(),
+            _productGenerator.Generate(),
+            _productGenerator.Generate(),
+            _productGenerator.Generate(),
+        };
+        var expected = new List<ProductResponseDto>();
+        postReqList.ForEach( async (item) =>
+        {
+            var postRes = await HttpClient.PostAsJsonAsync(ProductConstants.ProductEndpoint, item);
+            var postResContent = await postRes.Content.ReadFromJsonAsync<ProductResponseDto>();
+            postRes.StatusCode.Should().Be(HttpStatusCode.Created);
+            expected.Add(postResContent);
+        });
+        
+        // Act
+        var res = await HttpClient.GetAsync(ProductConstants.ProductEndpoint);
+        var resContent = await res.Content.ReadFromJsonAsync<List<ProductResponseDto>>();
+
+        // Assert
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+    
+    [Fact]
+    public async Task GetById()
+    {
+        // Arrange
+        
+        // Act
+        var res = await HttpClient.GetAsync($"{ProductConstants.ProductEndpoint}/{2}");
+
+        // Assert
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
     }
     
     [Fact]

@@ -3,6 +3,7 @@ using EcommerceApp.Features.Product.Mappers;
 using EcommerceApp.Features.Products.DTOs;
 using EcommerceApp.Features.Products.Models;
 using EcommerceApp.Features.Products.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Features.Product.Services;
 
@@ -14,9 +15,10 @@ public class ProductService : IProductService
         _context = context;
     }
     
-    public async Task<List<ProductItemModel?>> GetAllAsync()
+    public async Task<List<ProductItemModel>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var items = await _context.ProductItems.ToListAsync();
+        return items;
     }
 
     public async Task<ProductItemModel?> GetByIdAsync(int id)

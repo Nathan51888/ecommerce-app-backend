@@ -5,7 +5,7 @@ namespace EcommerceApp.Features.Products.Services;
 
 public interface IProductService
 {
-    Task<List<ProductItemModel?>> GetAllAsync();
+    Task<List<ProductItemModel>> GetAllAsync();
     Task<ProductItemModel?> GetByIdAsync(int id);
     Task<ProductItemModel?> CreateAsync(ProductCreateRequestDto requestDto);
     Task<ProductItemModel?> UpdateAsync(ProductUpdateRequestDto requestDto);
