@@ -1,4 +1,5 @@
 using EcommerceApp.Features.Order.DTOs;
+using EcommerceApp.Features.Order.Mappers;
 using EcommerceApp.Features.Order.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,33 +20,40 @@ public class OrderController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var items = await _service.GetAllAsync();
-        return Ok();
+        var response = items.Select(item => item.ToResponseDto()).ToList();
+        return Ok(response);
     }
 
     [HttpGet]
     [Route("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        return Ok();
+        var item = await _service.GetByIdAsync(id);
+        var response = item.ToResponseDto();
+        return Ok(response);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] OrderCreateRequestDto requestDto)
     {
-        return Ok();
+        var createdItem = await _service.CreateAsync(requestDto);
+        var response = createdItem.ToResponseDto();
+        return CreatedAtAction(nameof(GetById), new {id = createdItem.Id}, response);
     }
 
     [HttpPut]
     [Route("{id:int}")]
     public async Task<IActionResult> UpdateById([FromRoute] int id, [FromBody] OrderUpdateRequestDto requestDto)
     {
-        return Ok();
+        var updated = await _service.UpdateByIdAsync(id, requestDto);
+        return Ok(updated);
     }
 
     [HttpDelete]
     [Route("{id:int}")]
     public async Task<IActionResult> DeleteById([FromRoute] int id)
     {
-        return Ok();
+        var deleted = await _service.DeleteByIdAsync(id);
+        return NoContent();
     }
 }

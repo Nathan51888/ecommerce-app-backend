@@ -6,7 +6,7 @@ using EcommerceApp.Features.Order.Models;
 using EcommerceApp.Test.Abstractions;
 using FluentAssertions;
 
-[assembly:CaptureConsole]
+[assembly: CaptureConsole]
 namespace EcommerceApp.Test.Features.Order.Endpoints;
 
 public class OrderEndpointIntegrationTest : BaseIntegrationTest
@@ -14,9 +14,8 @@ public class OrderEndpointIntegrationTest : BaseIntegrationTest
     private readonly Faker<OrderModel> _orderGenerator =
         new Faker<OrderModel>()
             .RuleFor(x => x.OrderAddress, f => f.Address.FullAddress())
-            .RuleFor(x => x.OrderDate, f => f.Date.Soon())
             .RuleFor(x => x.OrderStatus, f => f.Lorem.Word())
-            .UseSeed(1000);
+            .UseSeed(1006);
 
     public OrderEndpointIntegrationTest(IntegrationTestWebAppFactory factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper)
     {
@@ -27,16 +26,20 @@ public class OrderEndpointIntegrationTest : BaseIntegrationTest
     {
         // Arrange
         var postReq = _orderGenerator.Generate();
+        var createDto = new OrderCreateRequestDto
+        {
+            OrderAddress = postReq.OrderAddress,
+            OrderStatus = postReq.OrderStatus
+        };
         var expected = new OrderResponseDto
         {
             Id = 0,
             OrderAddress = postReq.OrderAddress,
-            OrderDate = postReq.OrderDate,
             OrderStatus = postReq.OrderStatus,
         };
 
         // Act
-        var res = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, postReq);
+        var res = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, createDto, cancellationToken: TestContext.Current.CancellationToken);
         var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>();
 
         // Assert
@@ -53,7 +56,6 @@ public class OrderEndpointIntegrationTest : BaseIntegrationTest
         {
             Id = 0,
             OrderAddress = postReq.OrderAddress,
-            OrderDate = postReq.OrderDate,
             OrderStatus = postReq.OrderStatus,
 
         };
@@ -84,13 +86,12 @@ public class OrderEndpointIntegrationTest : BaseIntegrationTest
         {
             Id = 0,
             OrderAddress = postReq.OrderAddress,
-            OrderDate = postReq.OrderDate,
             OrderStatus = postReq.OrderStatus,
 
         };
 
-        var postRes = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, postReq);
-        var postResContent = await postRes.Content.ReadFromJsonAsync<OrderResponseDto>();
+        var postRes = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, postReq, cancellationToken: TestContext.Current.CancellationToken);
+        var postResContent = await postRes.Content.ReadFromJsonAsync<OrderResponseDto>(cancellationToken: TestContext.Current.CancellationToken);
 
         postRes.StatusCode.Should().Be(HttpStatusCode.Created);
         postResContent.Should().BeEquivalentTo(postReqExpected, opt => opt.Excluding(x => x.Id));
@@ -99,14 +100,13 @@ public class OrderEndpointIntegrationTest : BaseIntegrationTest
         var putReq = new OrderModel()
         {
             OrderAddress = "updated",
-            OrderDate = DateTime.Now,
             OrderStatus = "updated"
         };
         putReq.Id = postReqExpected.Id;
 
         // Act
-        var res = await HttpClient.PutAsJsonAsync($"{OrderConstants.OrderEndpoint}/{putReq.Id}", putReq);
-        var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>();
+        var res = await HttpClient.PutAsJsonAsync($"{OrderConstants.OrderEndpoint}/{putReq.Id}", putReq, cancellationToken: TestContext.Current.CancellationToken);
+        var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>(cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         res.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -118,9 +118,12 @@ public class OrderEndpointIntegrationTest : BaseIntegrationTest
     {
         // Arrange
         var postReq = _orderGenerator.Generate();
-        var postReqExpected = new OrderResponseDto()
+        var postReqExpected = new OrderResponseDto
         {
             Id = 0,
+            OrderAddress = postReq.OrderAddress,
+            OrderDate = default,
+            OrderStatus = postReq.OrderStatus,
         };
 
         var postRes = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, postReq);
