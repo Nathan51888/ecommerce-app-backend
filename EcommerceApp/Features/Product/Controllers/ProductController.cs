@@ -41,9 +41,10 @@ public class ProductController : ControllerBase
 
     [HttpPut]
     [Route("{id:int}")]
-    public async Task<IActionResult> UpdateById([FromRoute] int id)
+    public async Task<IActionResult> UpdateById([FromRoute] int id, [FromBody] ProductUpdateRequestDto requestDto)
     {
-        return Ok();
+        var item = await _service.UpdateAsync(requestDto);
+        return Ok(item);
     }
 
     [HttpDelete]

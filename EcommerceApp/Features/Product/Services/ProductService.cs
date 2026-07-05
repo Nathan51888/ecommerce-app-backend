@@ -37,7 +37,20 @@ public class ProductService : IProductService
 
     public async Task<ProductItemModel?> UpdateAsync(ProductUpdateRequestDto requestDto)
     {
-        throw new NotImplementedException();
+        var existingItem = await _context.ProductItems.FirstOrDefaultAsync(item => item.Id == requestDto.Id);
+        existingItem = new ProductItemModel
+        {
+            Id = requestDto.Id,
+            Name = requestDto.Name,
+            Description = requestDto.Description,
+            PriceRegular = requestDto.PriceRegular,
+            PriceDiscount = requestDto.PriceDiscount,
+            StockAmount = requestDto.StockAmount,
+            Category = requestDto.Category
+        };
+        await _context.SaveChangesAsync();
+
+        return existingItem;
     }
 
     public async Task<ProductItemModel?> DeleteByIdAsync(int id)
