@@ -1,4 +1,5 @@
 using EcommerceApp.Data;
+using EcommerceApp.Test.Abstractions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -6,9 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
 
+[assembly:AssemblyFixture(typeof(IntegrationTestWebAppFactoryFixture))]
+
 namespace EcommerceApp.Test.Abstractions;
 
-public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
+public class IntegrationTestWebAppFactoryFixture : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:latest")

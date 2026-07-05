@@ -17,7 +17,7 @@ public class OrderEndpointIntegrationTest : BaseIntegrationTest
             .RuleFor(x => x.OrderStatus, f => f.Lorem.Word())
             .UseSeed(1006);
 
-    public OrderEndpointIntegrationTest(IntegrationTestWebAppFactory factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper)
+    public OrderEndpointIntegrationTest(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
     {
     }
     

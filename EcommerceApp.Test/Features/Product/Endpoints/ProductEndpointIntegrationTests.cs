@@ -20,7 +20,7 @@ public class ProductEndpointIntegrationTests : BaseIntegrationTest
             .RuleFor(x => x.StockAmount, f => f.Random.Number())
             .UseSeed(1000);
 
-    public ProductEndpointIntegrationTests(IntegrationTestWebAppFactory factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper)
+    public ProductEndpointIntegrationTests(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
     {
     }
 
