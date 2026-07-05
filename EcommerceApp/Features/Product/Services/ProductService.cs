@@ -23,7 +23,8 @@ public class ProductService : IProductService
 
     public async Task<ProductItemModel?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var item = await _context.ProductItems.FirstOrDefaultAsync(item => item.Id == id);
+        return item;
     }
 
     public async Task<ProductItemModel?> CreateAsync(ProductCreateRequestDto requestDto)

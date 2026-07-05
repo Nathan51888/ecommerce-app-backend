@@ -28,7 +28,8 @@ public class ProductController : ControllerBase
     [Route("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        return Ok();
+        var item = await _service.GetByIdAsync(id);
+        return Ok(item);
     }
 
     [HttpPost]

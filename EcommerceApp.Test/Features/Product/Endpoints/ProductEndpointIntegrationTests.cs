@@ -84,12 +84,33 @@ public class ProductEndpointIntegrationTests : BaseIntegrationTest
     public async Task GetById()
     {
         // Arrange
+        var postReq = _productGenerator.Generate();
+        var expected = new ProductResponseDto()
+        {
+            Id = 0,
+            Name = postReq.Name,
+            Description = postReq.Description,
+            PriceRegular = postReq.PriceRegular,
+            PriceDiscount = postReq.PriceDiscount,
+            StockAmount = postReq.StockAmount,
+            Category = postReq.Category,
+        };
+        
+        var postRes = await HttpClient.PostAsJsonAsync(ProductConstants.ProductEndpoint, postReq);
+        var postResContent = await postRes.Content.ReadFromJsonAsync<ProductResponseDto>();
+
+        postRes.StatusCode.Should().Be(HttpStatusCode.Created);
+        postResContent.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.Id));
+        expected.Id = postResContent.Id;
+        
         
         // Act
-        var res = await HttpClient.GetAsync($"{ProductConstants.ProductEndpoint}/{2}");
+        var res = await HttpClient.GetAsync($"{ProductConstants.ProductEndpoint}/{expected.Id}");
+        var resContent = await res.Content.ReadFromJsonAsync<ProductResponseDto>();
 
         // Assert
         res.StatusCode.Should().Be(HttpStatusCode.OK);
+        resContent.Should().BeEquivalentTo(expected);
     }
     
     [Fact]
