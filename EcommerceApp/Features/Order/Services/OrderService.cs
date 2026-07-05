@@ -1,5 +1,6 @@
 using EcommerceApp.Data;
 using EcommerceApp.Features.Order.DTOs;
+using EcommerceApp.Features.Order.Mappers;
 using EcommerceApp.Features.Order.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,7 @@ public class OrderService : IOrderService
         _context = context;
     }
 
-    public async Task<List<OrderModel?>> GetAllAsync()
+    public async Task<List<OrderModel>> GetAllAsync()
     {
         var items = await _context.Orders.ToListAsync();
         return items;
@@ -22,21 +23,34 @@ public class OrderService : IOrderService
 
     public async Task<OrderModel?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var item = await _context.Orders.FirstOrDefaultAsync(x => x.Id == id);
+        return item;
     }
 
     public async Task<OrderModel?> CreateAsync(OrderCreateRequestDto requestDto)
     {
-        throw new NotImplementedException();
+        var itemModel = requestDto.ToModel();
+        var created = await _context.Orders.AddAsync(itemModel);
+        await _context.SaveChangesAsync();
+
+        return created.Entity;
     }
 
     public async Task<OrderModel?> UpdateByIdAsync(int id, OrderUpdateRequestDto requestDto)
     {
-        throw new NotImplementedException();
+        var existingItem = await _context.Orders.FirstOrDefaultAsync(x => x.Id == id);
+        existingItem?.OrderDate = requestDto.OrderDate;
+        existingItem?.OrderStatus = requestDto.OrderStatus;
+        existingItem?.OrderAddress = requestDto.OrderAddress;
+        await _context.SaveChangesAsync();
+        return existingItem;
     }
 
     public async Task<OrderModel?> DeleteByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var existingItem = await _context.Orders.FirstOrDefaultAsync(x => x.Id == id);
+        _context.Orders.Remove(existingItem);
+        await _context.SaveChangesAsync();
+        return existingItem;
     }
 }
