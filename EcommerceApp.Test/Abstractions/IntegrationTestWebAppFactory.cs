@@ -33,7 +33,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
         });
     }
 
-    public async Task InitializeAsync()
+    public async ValueTask InitializeAsync()
     {
         await _dbContainer.StartAsync();
         var scope = Services.CreateScope();
@@ -41,7 +41,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
         await dbContext.Database.MigrateAsync();
     }
 
-    public async Task DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         await _dbContainer.DisposeAsync();
     }

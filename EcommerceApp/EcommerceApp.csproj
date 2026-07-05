@@ -12,7 +12,7 @@
         <PackageReference Include="EFCore.NamingConventions" Version="10.0.1" />
         <PackageReference Include="FakeItEasy" Version="9.0.1" />
         <PackageReference Include="FluentAssertions" Version="8.10.0" />
-        <PackageReference Include="Meziantou.Extensions.Logging.Xunit" Version="2.0.3" />
+        <PackageReference Include="Meziantou.Extensions.Logging.Xunit.v3" Version="2.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.9" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.9" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.9"/>
@@ -39,6 +39,7 @@
         <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
         <PackageReference Include="Testcontainers" Version="4.13.0" />
         <PackageReference Include="Testcontainers.PostgreSql" Version="4.13.0" />
+        <PackageReference Include="xunit.v3" Version="3.2.2" />
     </ItemGroup>
 
     <ItemGroup>

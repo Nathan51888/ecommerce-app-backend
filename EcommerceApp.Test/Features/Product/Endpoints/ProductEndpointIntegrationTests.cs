@@ -5,7 +5,6 @@ using EcommerceApp.Features.Products.DTOs;
 using EcommerceApp.Features.Products.Models;
 using EcommerceApp.Test.Abstractions;
 using FluentAssertions;
-using Xunit.Abstractions;
 
 namespace EcommerceApp.Test.Features.Product.Endpoints;
 
