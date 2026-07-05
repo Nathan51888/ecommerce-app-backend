@@ -1,0 +1,44 @@
+using EcommerceApp.Data;
+using EcommerceApp.Features.Product.Mappers;
+using EcommerceApp.Features.Products.DTOs;
+using EcommerceApp.Features.Products.Models;
+using EcommerceApp.Features.Products.Services;
+
+namespace EcommerceApp.Features.Product.Services;
+
+public class ProductService : IProductService
+{
+    private readonly AppDbContext _context;
+    public ProductService(AppDbContext context)
+    {
+        _context = context;
+    }
+    
+    public async Task<List<ProductItemModel?>> GetAllAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ProductItemModel?> GetByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ProductItemModel?> CreateAsync(ProductCreateRequestDto requestDto)
+    {
+        var itemModel = requestDto.ToModel();
+        await _context.ProductItems.AddAsync(itemModel);
+        await _context.SaveChangesAsync();
+        return itemModel;
+    }
+
+    public async Task<ProductItemModel?> UpdateAsync(ProductUpdateRequestDto requestDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ProductItemModel?> DeleteByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+}

@@ -1,4 +1,6 @@
 using EcommerceApp.Data;
+using EcommerceApp.Features.Product.Services;
+using EcommerceApp.Features.Products.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Scalar.AspNetCore;
@@ -38,7 +40,9 @@ try
     });
 
     // Services
+    builder.Services.AddScoped<IProductService, ProductService>();
 
+    
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
