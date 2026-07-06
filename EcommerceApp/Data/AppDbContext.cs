@@ -1,11 +1,12 @@
 using EcommerceApp.Features.Cart.Models;
 using EcommerceApp.Features.Order.Models;
 using EcommerceApp.Features.Products.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Data;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<ApplicationUser>
 {
     public AppDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
     {
@@ -18,5 +19,16 @@ public class AppDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<ApplicationUser>(entity =>
+        {
+            entity.Property(e => e.EnableNotifications).HasDefaultValue(true);
+            entity.Property(e => e.Initials).HasMaxLength(5);
+        });
     }
 }

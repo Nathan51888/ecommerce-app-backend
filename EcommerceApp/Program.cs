@@ -42,6 +42,8 @@ try
     });
     
     // Identity
+    builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>();
 
     // Services
     builder.Services.AddScoped<IProductService, ProductService>();
