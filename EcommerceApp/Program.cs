@@ -20,6 +20,15 @@ try
     // Add services to the container.
     builder.Services.AddControllers();
     builder.Services.AddOpenApi();
+    
+    // Problem Details
+    builder.Services.AddProblemDetails(options =>
+    {
+        options.CustomizeProblemDetails = ctx =>
+        {
+            ctx.ProblemDetails.Extensions["traceId"] = ctx.HttpContext.TraceIdentifier;
+        };
+    });
 
     // Logger
     builder.Services.AddSerilog((services, lc) =>
