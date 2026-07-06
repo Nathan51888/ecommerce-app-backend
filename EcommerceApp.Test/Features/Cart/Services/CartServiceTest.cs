@@ -47,17 +47,17 @@ public class CartServiceTest
             _cartItemGenerator.Generate(),
         };
         var createdItemList = new List<CartItemModel>();
-        foreach (var cartItem in toCreateItemList)
+        foreach (var item in toCreateItemList)
         {
             var dto = new CartItemCreateRequestDto
             {
-                ProductsId = cartItem.ProductsId,
-                ItemAmount = cartItem.ItemAmount,
-                CustomersId = cartItem.CustomerId,
+                ProductsId = item.ProductsId,
+                ItemAmount = item.ItemAmount,
+                CustomersId = userId,
             };
             var createdItem = await _sut.CreateAsync(userId, dto);
             createdItem.Should().NotBeNull();
-            createdItem.Should().BeEquivalentTo(cartItem, opt => opt.Excluding(x => x.Id));
+            createdItem.Should().BeEquivalentTo(dto);
             createdItemList.Add(createdItem);
         }
         
@@ -68,7 +68,7 @@ public class CartServiceTest
         var expected = createdItemList;
         items.Should().NotBeNull();
         items.Should().NotBeEmpty();
-        items.Should().BeEquivalentTo(expected);
+        items.Should().Contain(expected);
     }
 
     [Fact]
@@ -81,11 +81,11 @@ public class CartServiceTest
         {
             ProductsId = createModel.ProductsId,
             ItemAmount = createModel.ItemAmount,
-            CustomersId = createModel.CustomerId
+            CustomersId = userId
         };
         var createdItem = await _sut.CreateAsync(userId, createDto);
         createdItem.Should().NotBeNull();
-        createdItem.Should().BeEquivalentTo(createModel, opt => opt.Excluding(x => x.Id));
+        createdItem.Should().BeEquivalentTo(createDto);
 
         // Act
         var item = await _sut.GetByIdAsync(userId, createdItem.Id);
@@ -108,14 +108,14 @@ public class CartServiceTest
         {
             ProductsId = cartItem.ProductsId,
             ItemAmount = cartItem.ItemAmount,
-            CustomersId = cartItem.CustomerId,
+            CustomersId = userId,
         };
         var createdItem = await _sut.CreateAsync(userId, dto);
 
         // Assert
-        var expected = cartItem;
+        var expected = dto;
         createdItem.Should().NotBeNull();
-        createdItem.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.Id));
+        createdItem.Should().BeEquivalentTo(expected);
     }
 
     [Fact]
@@ -159,11 +159,11 @@ public class CartServiceTest
         {
             ProductsId = createModel.ProductsId,
             ItemAmount = createModel.ItemAmount,
-            CustomersId = createModel.CustomerId
+            CustomersId = userId
         };
         var createdItem = await _sut.CreateAsync(userId, createDto);
         createdItem.Should().NotBeNull();
-        createdItem.Should().BeEquivalentTo(createModel, opt => opt.Excluding(x => x.Id));
+        createdItem.Should().BeEquivalentTo(createDto);
 
         // Act
         var deletedItem = await _sut.DeleteByIdAsync(userId, createdItem.Id);

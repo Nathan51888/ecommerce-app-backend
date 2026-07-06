@@ -1,6 +1,8 @@
 using EcommerceApp.Data;
 using EcommerceApp.Features.Cart.DTOs;
+using EcommerceApp.Features.Cart.Mappers;
 using EcommerceApp.Features.Cart.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Features.Cart.Services;
 
@@ -15,26 +17,50 @@ public class CartService : ICartService
     
     public async Task<List<CartItemModel>> GetAllAsync(int userId)
     {
-        throw new NotImplementedException();
+        var items = await _context.CartItems.Where(x => x.CustomersId == userId).ToListAsync();
+        return items;
     }
 
     public async Task<CartItemModel?> GetByIdAsync(int userId, int itemId)
     {
-        throw new NotImplementedException();
+        var item = await _context.CartItems.FirstOrDefaultAsync(x => x.CustomersId == userId && x.Id == itemId);
+        return item;
     }
 
     public async Task<CartItemModel?> CreateAsync(int userId, CartItemCreateRequestDto requestDto)
     {
-        throw new NotImplementedException();
+        var model = requestDto.ToModel();
+        var createdItem = await _context.CartItems.AddAsync(model);
+        await _context.SaveChangesAsync();
+        
+        return createdItem.Entity;
     }
 
     public async Task<CartItemModel?> UpdateByIdAsync(int userId, CartItemUpdateRequestDto requestDto)
     {
-        throw new NotImplementedException();
+        var existingItem =
+            await _context.CartItems.FirstOrDefaultAsync(x => x.CustomersId == userId && x.Id == requestDto.Id);
+        // if (existingItem == null)
+        //     return null;
+        
+        existingItem.ProductsId = requestDto.ProductsId;
+        existingItem.ItemAmount = requestDto.ItemAmount;
+        await _context.SaveChangesAsync();
+        
+        var updatedItem =
+            await _context.CartItems.FirstOrDefaultAsync(x => x.CustomersId == userId && x.Id == requestDto.Id);
+        return updatedItem;
     }
 
     public async Task<CartItemModel?> DeleteByIdAsync(int userId, int itemId)
     {
-        throw new NotImplementedException();
+        var existingItem = await _context.CartItems.FirstOrDefaultAsync(x => x.CustomersId == userId && x.Id == itemId);
+        // if (existingItem == null)
+        //     return null;
+
+        _context.Remove(existingItem);
+        await _context.SaveChangesAsync();
+
+        return existingItem;
     }
 }
