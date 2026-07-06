@@ -1,4 +1,5 @@
 using EcommerceApp.Features.Cart.DTOs;
+using EcommerceApp.Features.Cart.Mappers;
 using EcommerceApp.Features.Cart.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,8 +22,8 @@ public class CartController : ControllerBase
         var userId = 3;
 
         var items = await _service.GetAllAsync(userId);
-        
-        return Ok();
+        var response = items.Select(item => item.ToResponseDto());
+        return Ok(response);
     }
 
     [HttpGet]
@@ -32,8 +33,8 @@ public class CartController : ControllerBase
         var userId = 3;
 
         var item = await _service.GetByIdAsync(userId, itemId);
-        
-        return Ok();
+        var response = item.ToResponseDto();
+        return Ok(response);
     }
 
     [HttpPost]
@@ -42,8 +43,8 @@ public class CartController : ControllerBase
         var userId = 3;
 
         var createdItem = await _service.CreateAsync(userId, requestDto);
-        
-        return Created();
+        var response = createdItem.ToResponseDto();
+        return CreatedAtAction(nameof(GetById), new {id = createdItem.Id}, response);
     }
 
     [HttpPut]
@@ -52,8 +53,8 @@ public class CartController : ControllerBase
         var userId = 3;
 
         var updatedItem = await _service.UpdateByIdAsync(userId, requestDto);
-        
-        return Ok();
+        var response = updatedItem.ToResponseDto();
+        return Ok(response);
     }
 
     [HttpDelete]

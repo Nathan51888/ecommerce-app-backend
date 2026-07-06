@@ -1,6 +1,8 @@
 using EcommerceApp.Data;
+using EcommerceApp.Features.Cart.Services;
 using EcommerceApp.Features.Order.Services;
 using EcommerceApp.Features.Product.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Scalar.AspNetCore;
@@ -38,10 +40,13 @@ try
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
             .UseSnakeCaseNamingConvention();
     });
+    
+    // Identity
 
     // Services
     builder.Services.AddScoped<IProductService, ProductService>();
     builder.Services.AddScoped<IOrderService, OrderService>();
+    builder.Services.AddScoped<ICartService, CartService>();
 
 
     var app = builder.Build();

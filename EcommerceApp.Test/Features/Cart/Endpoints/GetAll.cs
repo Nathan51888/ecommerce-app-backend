@@ -13,6 +13,7 @@ public class GetAll : BaseIntegrationTest
     private readonly Faker<CartItemModel> _cartGenerator =
         new Faker<CartItemModel>()
             .RuleFor(x => x.ItemAmount, f => f.Random.Number())
+            .RuleFor(x => x.ProductsId, f => f.Random.Number())
             .UseSeed(1000);
 
     public GetAll(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
@@ -22,6 +23,7 @@ public class GetAll : BaseIntegrationTest
     [Fact]
     public async Task GetAll_ReturnsAll()
     {
+        var userId = 3;
         // Arrange
         var postReqList = new List<CartItemModel>
         {
@@ -30,13 +32,20 @@ public class GetAll : BaseIntegrationTest
             _cartGenerator.Generate(),
             _cartGenerator.Generate()
         };
-        var expected = new List<CartItemResponseDto>();
+        var createdItemList = new List<CartItemResponseDto>();
         foreach (var item in postReqList)
         {
-            var postRes = await HttpClient.PostAsJsonAsync(CartConstants.Endpoint, item);
+            var dto = new CartItemCreateRequestDto
+            {
+                ProductsId = item.ProductsId,
+                ItemAmount = item.ItemAmount,
+                CustomersId = userId,
+            };
+            var postRes = await HttpClient.PostAsJsonAsync(CartConstants.Endpoint, dto);
             var postResContent = await postRes.Content.ReadFromJsonAsync<CartItemResponseDto>();
             postRes.StatusCode.Should().Be(HttpStatusCode.Created);
-            expected.Add(postResContent);
+            postResContent.Should().BeEquivalentTo(dto);
+            createdItemList.Add(postResContent);
         }
 
         // Act
@@ -44,6 +53,7 @@ public class GetAll : BaseIntegrationTest
         var resContent = await res.Content.ReadFromJsonAsync<List<CartItemResponseDto>>();
 
         // Assert
+        var expected = createdItemList;
         res.StatusCode.Should().Be(HttpStatusCode.OK);
         resContent.Should().BeEquivalentTo(expected);
     }

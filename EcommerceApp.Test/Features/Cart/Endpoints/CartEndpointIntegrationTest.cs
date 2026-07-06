@@ -5,7 +5,6 @@ using EcommerceApp.Features.Cart.DTOs;
 using EcommerceApp.Features.Cart.Models;
 using EcommerceApp.Test.Abstractions;
 using FluentAssertions;
-using Org.BouncyCastle.Bcpg;
 
 [assembly: CaptureConsole]
 namespace EcommerceApp.Test.Features.Cart.Endpoints;
@@ -81,7 +80,7 @@ public class CartEndpointIntegrationTest : BaseIntegrationTest
         res.StatusCode.Should().Be(HttpStatusCode.OK);
         resContent.Should().BeEquivalentTo(expected);
     }
-
+    
     [Fact]
     public async Task UpdateById()
     {

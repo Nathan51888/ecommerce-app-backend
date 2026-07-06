@@ -22,6 +22,7 @@ public static class CartMapper
             Id = model.Id,
             ProductsId = model.ProductsId,
             ItemAmount = model.ItemAmount,
+            CustomersId = model.CustomersId,
         };
     }
 }
