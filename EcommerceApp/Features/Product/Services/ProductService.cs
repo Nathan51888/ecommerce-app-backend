@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Features.Product.Services;
 
-public class ProductService : IProductService
+public sealed class ProductService : IProductService
 {
     private readonly AppDbContext _context;
 

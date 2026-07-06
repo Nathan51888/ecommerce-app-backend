@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace EcommerceApp.Features.Products.Models;
 
 [Table("products")]
-public class ProductItemModel
+public sealed class ProductItemModel
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

@@ -4,7 +4,7 @@ using EcommerceApp.Features.Products.Models;
 namespace EcommerceApp.Features.Cart.Models;
 
 [Table("carts_items")]
-public class CartItemModel
+public sealed class CartItemModel
 {
     public int Id { get; set; }
     // FK: products

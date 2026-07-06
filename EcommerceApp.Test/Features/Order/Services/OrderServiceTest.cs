@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Test.Features.Order.Services;
 
-public class OrderServiceTest
+public sealed class OrderServiceTest
 {
     private AppDbContext CreateDbContext()
     {

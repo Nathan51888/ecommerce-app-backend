@@ -9,7 +9,7 @@ using FluentAssertions;
 [assembly: CaptureConsole]
 namespace EcommerceApp.Test.Features.Cart.Endpoints;
 
-public class CartEndpointIntegrationTest : BaseIntegrationTest
+public sealed class CartEndpointIntegrationTest : BaseIntegrationTest
 {
     private readonly Faker<CartItemModel> _cartItemGenerator =
         new Faker<CartItemModel>()

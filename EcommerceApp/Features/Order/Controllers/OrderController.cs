@@ -7,7 +7,7 @@ namespace EcommerceApp.Features.Order.Controllers;
 
 [ApiController]
 [Route("api/orders")]
-public class OrderController : ControllerBase
+public sealed class OrderController : ControllerBase
 {
     private readonly IOrderService _service;
 

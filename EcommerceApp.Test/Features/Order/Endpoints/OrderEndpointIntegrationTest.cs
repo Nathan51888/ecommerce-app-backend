@@ -8,7 +8,7 @@ using FluentAssertions;
 
 namespace EcommerceApp.Test.Features.Order.Endpoints;
 
-public class OrderEndpointIntegrationTest : BaseIntegrationTest
+public sealed class OrderEndpointIntegrationTest : BaseIntegrationTest
 {
     private readonly Faker<OrderModel> _orderGenerator =
         new Faker<OrderModel>()

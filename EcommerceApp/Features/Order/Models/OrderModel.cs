@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace EcommerceApp.Features.Order.Models;
 
 [Table("orders")]
-public class OrderModel
+public sealed class OrderModel
 {
     public int Id { get; set; }
     public string OrderAddress { get; set; } = string.Empty;

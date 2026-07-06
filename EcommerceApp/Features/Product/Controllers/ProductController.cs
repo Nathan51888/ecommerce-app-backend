@@ -7,7 +7,7 @@ namespace EcommerceApp.Features.Product.Controllers;
 
 [ApiController]
 [Route("api/products")]
-public class ProductController : ControllerBase
+public sealed class ProductController : ControllerBase
 {
     private readonly IProductService _service;
 

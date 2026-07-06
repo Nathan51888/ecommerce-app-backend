@@ -2,7 +2,7 @@ using EcommerceApp.Features.Products.Models;
 
 namespace EcommerceApp.Features.Cart.DTOs;
 
-public class CartItemCreateRequestDto
+public sealed class CartItemCreateRequestDto
 {
     // FK: products
     public int ProductsId { get; set; }

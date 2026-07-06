@@ -8,7 +8,7 @@ using FluentAssertions;
 
 namespace EcommerceApp.Test.Features.Cart.Endpoints;
 
-public class GetAll : BaseIntegrationTest
+public sealed class GetAll : BaseIntegrationTest
 {
     private readonly Faker<CartItemModel> _cartGenerator =
         new Faker<CartItemModel>()

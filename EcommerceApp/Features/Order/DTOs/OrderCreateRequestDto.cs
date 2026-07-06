@@ -1,6 +1,6 @@
 namespace EcommerceApp.Features.Order.DTOs;
 
-public class OrderCreateRequestDto
+public sealed class OrderCreateRequestDto
 {
     public string OrderAddress { get; set; } = string.Empty;
     public DateTime OrderDate { get; set; }

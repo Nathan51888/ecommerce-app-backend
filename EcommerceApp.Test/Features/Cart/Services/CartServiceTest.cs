@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Test.Features.Cart.Services;
 
-public class CartServiceTest
+public sealed class CartServiceTest
 {
     private AppDbContext CreateDbContext()
     {

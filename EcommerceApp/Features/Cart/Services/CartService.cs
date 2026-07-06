@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Features.Cart.Services;
 
-public class CartService : ICartService
+public sealed class CartService : ICartService
 {
     private readonly AppDbContext _context;
 

@@ -1,6 +1,6 @@
 namespace EcommerceApp.Features.Products.DTOs;
 
-public class ProductCreateRequestDto
+public sealed class ProductCreateRequestDto
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

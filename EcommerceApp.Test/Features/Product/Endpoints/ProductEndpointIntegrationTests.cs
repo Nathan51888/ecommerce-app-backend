@@ -8,7 +8,7 @@ using FluentAssertions;
 
 namespace EcommerceApp.Test.Features.Product.Endpoints;
 
-public class ProductEndpointIntegrationTests : BaseIntegrationTest
+public sealed class ProductEndpointIntegrationTests : BaseIntegrationTest
 {
     private readonly Faker<ProductItemModel> _productGenerator =
         new Faker<ProductItemModel>()

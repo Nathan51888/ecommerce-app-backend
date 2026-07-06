@@ -1,6 +1,6 @@
 namespace EcommerceApp.Features.Products.DTOs;
 
-public class ProductUpdateRequestDto
+public sealed class ProductUpdateRequestDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

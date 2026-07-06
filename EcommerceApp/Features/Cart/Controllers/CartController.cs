@@ -7,7 +7,7 @@ namespace EcommerceApp.Features.Cart.Controllers;
 
 [ApiController]
 [Route("api/carts")]
-public class CartController : ControllerBase
+public sealed class CartController : ControllerBase
 {
     private readonly ICartService _service;
 

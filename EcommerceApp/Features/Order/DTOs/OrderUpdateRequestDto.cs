@@ -1,6 +1,6 @@
 namespace EcommerceApp.Features.Order.DTOs;
 
-public class OrderUpdateRequestDto
+public sealed class OrderUpdateRequestDto
 {
     public int Id { get; set; }
     public string OrderAddress { get; set; } = string.Empty;

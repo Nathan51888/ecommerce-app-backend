@@ -1,6 +1,6 @@
 namespace EcommerceApp.Features.Cart.DTOs;
 
-public class CartItemResponseDto
+public sealed class CartItemResponseDto
 {
     public int Id { get; set; }
     // FK: products
