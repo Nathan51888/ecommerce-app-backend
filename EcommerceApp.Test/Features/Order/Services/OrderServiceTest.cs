@@ -10,17 +10,7 @@ namespace EcommerceApp.Test.Features.Order.Services;
 
 public sealed class OrderServiceTest
 {
-    private AppDbContext CreateDbContext()
-    {
-        var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("testing")
-            .Options;
-        
-        return new AppDbContext(options);
-    }
-
     private readonly AppDbContext _context;
-    private readonly IOrderService _sut;
 
     private readonly Faker<OrderModel> _orderGenerator =
         new Faker<OrderModel>()
@@ -28,28 +18,39 @@ public sealed class OrderServiceTest
             .RuleFor(x => x.OrderStatus, f => f.Lorem.Word())
             .RuleFor(x => x.OrderAddress, f => f.Address.FullAddress())
             .UseSeed(3210);
-    
+
+    private readonly IOrderService _sut;
+
     public OrderServiceTest()
     {
         _context = CreateDbContext();
         _sut = new OrderService(_context);
     }
 
+    private AppDbContext CreateDbContext()
+    {
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase("testing")
+            .Options;
+
+        return new AppDbContext(options);
+    }
+
     [Fact]
     public async Task GetAll()
     {
         // Arrange
-        var toCreateItemList = new List<OrderModel>()
+        var toCreateItemList = new List<OrderModel>
         {
             _orderGenerator.Generate(),
             _orderGenerator.Generate(),
             _orderGenerator.Generate(),
-            _orderGenerator.Generate(),
+            _orderGenerator.Generate()
         };
         var createdItemList = new List<OrderModel>();
         foreach (var order in toCreateItemList)
         {
-            var dto = new OrderCreateRequestDto()
+            var dto = new OrderCreateRequestDto
             {
                 OrderAddress = order.OrderAddress,
                 OrderDate = order.OrderDate,
@@ -60,7 +61,7 @@ public sealed class OrderServiceTest
             createdItem.Should().BeEquivalentTo(order, opt => opt.Excluding(x => x.Id));
             createdItemList.Add(createdItem);
         }
-        
+
         // Act
         var itemList = await _sut.GetAllAsync();
 
@@ -84,7 +85,7 @@ public sealed class OrderServiceTest
         var createdItem = await _sut.CreateAsync(createDto);
         createdItem.Should().NotBeNull();
         createdItem.Should().BeEquivalentTo(createModel, opt => opt.Excluding(x => x.Id));
-        
+
         // Act
         var item = await _sut.GetByIdAsync(createdItem.Id);
 
@@ -98,16 +99,16 @@ public sealed class OrderServiceTest
     {
         // Arrange
         var order = _orderGenerator.Generate();
-        
+
         // Act
-        var dto = new OrderCreateRequestDto()
+        var dto = new OrderCreateRequestDto
         {
             OrderAddress = order.OrderAddress,
             OrderDate = order.OrderDate,
             OrderStatus = order.OrderStatus
         };
         var createdItem = await _sut.CreateAsync(dto);
-        
+
         // Assert
         createdItem.Should().NotBeNull();
         createdItem.Should().BeEquivalentTo(order, opt => opt.Excluding(x => x.Id));
@@ -134,7 +135,7 @@ public sealed class OrderServiceTest
             Id = createdItem.Id,
             OrderAddress = "updated",
             OrderDate = DateTime.Now,
-            OrderStatus = "updated",
+            OrderStatus = "updated"
         };
         var updatedItem = await _sut.UpdateByIdAsync(dto.Id, dto);
 
@@ -157,7 +158,7 @@ public sealed class OrderServiceTest
         var createdItem = await _sut.CreateAsync(createDto);
         createdItem.Should().NotBeNull();
         createdItem.Should().BeEquivalentTo(createModel, opt => opt.Excluding(x => x.Id));
-        
+
         // Act
         var deletedItem = await _sut.DeleteByIdAsync(createdItem.Id);
 

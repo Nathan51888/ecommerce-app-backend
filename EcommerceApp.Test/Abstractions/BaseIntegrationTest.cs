@@ -9,9 +9,9 @@ namespace EcommerceApp.Test.Abstractions;
 public class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactoryFixture>
 {
     private readonly ITestOutputHelper _testOutputHelper;
-    protected HttpClient HttpClient { get; init; }
 
-    protected BaseIntegrationTest(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper)
+    protected BaseIntegrationTest(IntegrationTestWebAppFactoryFixture factoryFixture,
+        ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
         var factoryWithLogger = factoryFixture.WithWebHostBuilder(builder =>
@@ -26,4 +26,6 @@ public class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactoryFix
         });
         HttpClient = factoryWithLogger.CreateClient();
     }
+
+    protected HttpClient HttpClient { get; init; }
 }

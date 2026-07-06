@@ -11,7 +11,7 @@ public static class CartMapper
         {
             ProductsId = dto.ProductsId,
             ItemAmount = dto.ItemAmount,
-            CustomersId = dto.CustomersId,
+            CustomersId = dto.CustomersId
         };
     }
 
@@ -22,7 +22,7 @@ public static class CartMapper
             Id = model.Id,
             ProductsId = model.ProductsId,
             ItemAmount = model.ItemAmount,
-            CustomersId = model.CustomersId,
+            CustomersId = model.CustomersId
         };
     }
 }

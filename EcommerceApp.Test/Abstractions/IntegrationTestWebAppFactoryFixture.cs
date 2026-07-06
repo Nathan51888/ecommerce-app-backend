@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
 
-[assembly:AssemblyFixture(typeof(IntegrationTestWebAppFactoryFixture))]
+[assembly: AssemblyFixture(typeof(IntegrationTestWebAppFactoryFixture))]
 
 namespace EcommerceApp.Test.Abstractions;
 
@@ -16,25 +16,6 @@ public class IntegrationTestWebAppFactoryFixture : WebApplicationFactory<Program
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:latest")
         .Build();
-
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
-        builder.ConfigureTestServices(services =>
-        {
-            var descriptor = services.SingleOrDefault(s => s.ServiceType == typeof(DbContextOptions<AppDbContext>));
-            if (descriptor is not null)
-            {
-                services.Remove(descriptor);
-            }
-
-            services.AddDbContext<AppDbContext>(options =>
-            {
-                options
-                    .UseNpgsql(_dbContainer.GetConnectionString())
-                    .UseSnakeCaseNamingConvention();
-            });
-        });
-    }
 
     public async ValueTask InitializeAsync()
     {
@@ -47,5 +28,21 @@ public class IntegrationTestWebAppFactoryFixture : WebApplicationFactory<Program
     public override async ValueTask DisposeAsync()
     {
         await _dbContainer.DisposeAsync();
+    }
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureTestServices(services =>
+        {
+            var descriptor = services.SingleOrDefault(s => s.ServiceType == typeof(DbContextOptions<AppDbContext>));
+            if (descriptor is not null) services.Remove(descriptor);
+
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options
+                    .UseNpgsql(_dbContainer.GetConnectionString())
+                    .UseSnakeCaseNamingConvention();
+            });
+        });
     }
 }

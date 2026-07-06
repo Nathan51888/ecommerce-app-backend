@@ -3,10 +3,7 @@ using System.Net.Http.Json;
 using Bogus;
 using EcommerceApp.Features.Order.DTOs;
 using EcommerceApp.Features.Order.Models;
-using EcommerceApp.Features.Products.DTOs;
-using EcommerceApp.Features.Products.Models;
 using EcommerceApp.Test.Abstractions;
-using EcommerceApp.Test.Features.Product;
 using FluentAssertions;
 
 namespace EcommerceApp.Test.Features.Order.Endpoints;
@@ -19,7 +16,8 @@ public sealed class GetAll : BaseIntegrationTest
             .RuleFor(x => x.OrderStatus, f => f.Lorem.Word())
             .UseSeed(1000);
 
-    public GetAll(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
+    public GetAll(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(
+        factoryFixture, testOutputHelper)
     {
     }
 

@@ -14,7 +14,7 @@ public sealed class CartService : ICartService
     {
         _context = context;
     }
-    
+
     public async Task<List<CartItemModel>> GetAllAsync(int userId)
     {
         var items = await _context.CartItems.Where(x => x.CustomersId == userId).ToListAsync();
@@ -32,7 +32,7 @@ public sealed class CartService : ICartService
         var model = requestDto.ToModel();
         var createdItem = await _context.CartItems.AddAsync(model);
         await _context.SaveChangesAsync();
-        
+
         return createdItem.Entity;
     }
 
@@ -42,11 +42,11 @@ public sealed class CartService : ICartService
             await _context.CartItems.FirstOrDefaultAsync(x => x.CustomersId == userId && x.Id == requestDto.Id);
         // if (existingItem == null)
         //     return null;
-        
+
         existingItem.ProductsId = requestDto.ProductsId;
         existingItem.ItemAmount = requestDto.ItemAmount;
         await _context.SaveChangesAsync();
-        
+
         var updatedItem =
             await _context.CartItems.FirstOrDefaultAsync(x => x.CustomersId == userId && x.Id == requestDto.Id);
         return updatedItem;

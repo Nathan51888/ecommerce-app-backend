@@ -38,7 +38,7 @@ public sealed class OrderController : ControllerBase
     {
         var createdItem = await _service.CreateAsync(requestDto);
         var response = createdItem.ToResponseDto();
-        return CreatedAtAction(nameof(GetById), new {id = createdItem.Id}, response);
+        return CreatedAtAction(nameof(GetById), new { id = createdItem.Id }, response);
     }
 
     [HttpPut]

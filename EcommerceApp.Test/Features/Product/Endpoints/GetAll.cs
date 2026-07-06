@@ -20,7 +20,8 @@ public sealed class GetAll : BaseIntegrationTest
             .RuleFor(x => x.StockAmount, f => f.Random.Number())
             .UseSeed(1000);
 
-    public GetAll(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
+    public GetAll(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(
+        factoryFixture, testOutputHelper)
     {
     }
 

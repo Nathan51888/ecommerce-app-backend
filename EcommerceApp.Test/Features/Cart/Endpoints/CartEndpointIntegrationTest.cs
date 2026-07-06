@@ -7,6 +7,7 @@ using EcommerceApp.Test.Abstractions;
 using FluentAssertions;
 
 [assembly: CaptureConsole]
+
 namespace EcommerceApp.Test.Features.Cart.Endpoints;
 
 public sealed class CartEndpointIntegrationTest : BaseIntegrationTest
@@ -17,10 +18,11 @@ public sealed class CartEndpointIntegrationTest : BaseIntegrationTest
             .RuleFor(x => x.ItemAmount, f => f.Random.Number())
             .UseSeed(1006);
 
-    public CartEndpointIntegrationTest(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
+    public CartEndpointIntegrationTest(IntegrationTestWebAppFactoryFixture factoryFixture,
+        ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
     {
     }
-    
+
     [Fact]
     public async Task Create()
     {
@@ -31,18 +33,19 @@ public sealed class CartEndpointIntegrationTest : BaseIntegrationTest
         {
             ProductsId = postReq.ProductsId,
             ItemAmount = postReq.ItemAmount,
-            CustomersId = userId,
+            CustomersId = userId
         };
         var expected = new CartItemResponseDto
         {
             Id = 0,
             ProductsId = postReq.ProductsId,
             ItemAmount = postReq.ItemAmount,
-            CustomersId = userId,
+            CustomersId = userId
         };
 
         // Act
-        var res = await HttpClient.PostAsJsonAsync(CartConstants.Endpoint, createDto, cancellationToken: TestContext.Current.CancellationToken);
+        var res = await HttpClient.PostAsJsonAsync(CartConstants.Endpoint, createDto,
+            TestContext.Current.CancellationToken);
         var resContent = await res.Content.ReadFromJsonAsync<CartItemResponseDto>();
 
         // Assert
@@ -61,7 +64,7 @@ public sealed class CartEndpointIntegrationTest : BaseIntegrationTest
             Id = 0,
             ProductsId = postReq.ProductsId,
             ItemAmount = postReq.ItemAmount,
-            CustomersId = userId,
+            CustomersId = userId
         };
 
         var postRes = await HttpClient.PostAsJsonAsync(CartConstants.Endpoint, postReq);
@@ -80,7 +83,7 @@ public sealed class CartEndpointIntegrationTest : BaseIntegrationTest
         res.StatusCode.Should().Be(HttpStatusCode.OK);
         resContent.Should().BeEquivalentTo(expected);
     }
-    
+
     [Fact]
     public async Task UpdateById()
     {
@@ -92,26 +95,30 @@ public sealed class CartEndpointIntegrationTest : BaseIntegrationTest
             Id = 0,
             ProductsId = postReq.ProductsId,
             ItemAmount = postReq.ItemAmount,
-            CustomersId = userId,
+            CustomersId = userId
         };
 
-        var postRes = await HttpClient.PostAsJsonAsync(CartConstants.Endpoint, postReq, cancellationToken: TestContext.Current.CancellationToken);
-        var postResContent = await postRes.Content.ReadFromJsonAsync<CartItemResponseDto>(cancellationToken: TestContext.Current.CancellationToken);
+        var postRes =
+            await HttpClient.PostAsJsonAsync(CartConstants.Endpoint, postReq, TestContext.Current.CancellationToken);
+        var postResContent =
+            await postRes.Content.ReadFromJsonAsync<CartItemResponseDto>(TestContext.Current.CancellationToken);
 
         postRes.StatusCode.Should().Be(HttpStatusCode.Created);
         postResContent.Should().BeEquivalentTo(postReqExpected, opt => opt.Excluding(x => x.Id));
         postReqExpected.Id = postResContent.Id;
 
-        var putReq = new CartItemUpdateRequestDto()
+        var putReq = new CartItemUpdateRequestDto
         {
             ProductsId = 6,
-            ItemAmount = 6,
+            ItemAmount = 6
         };
         putReq.Id = postReqExpected.Id;
 
         // Act
-        var res = await HttpClient.PutAsJsonAsync($"{CartConstants.Endpoint}/{putReq.Id}", putReq, cancellationToken: TestContext.Current.CancellationToken);
-        var resContent = await res.Content.ReadFromJsonAsync<CartItemResponseDto>(cancellationToken: TestContext.Current.CancellationToken);
+        var res = await HttpClient.PutAsJsonAsync($"{CartConstants.Endpoint}/{putReq.Id}", putReq,
+            TestContext.Current.CancellationToken);
+        var resContent =
+            await res.Content.ReadFromJsonAsync<CartItemResponseDto>(TestContext.Current.CancellationToken);
 
         // Assert
         res.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -138,12 +145,11 @@ public sealed class CartEndpointIntegrationTest : BaseIntegrationTest
         postRes.StatusCode.Should().Be(HttpStatusCode.Created);
         postResContent.Should().BeEquivalentTo(postReqExpected, opt => opt.Excluding(x => x.Id));
         postReqExpected.Id = postResContent.Id;
-        
+
         // Act
         var res = await HttpClient.DeleteAsync($"{CartConstants.Endpoint}/{postReqExpected.Id}");
 
         // Assert
         res.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
-    
 }

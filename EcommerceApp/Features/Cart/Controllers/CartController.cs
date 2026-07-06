@@ -44,7 +44,7 @@ public sealed class CartController : ControllerBase
 
         var createdItem = await _service.CreateAsync(userId, requestDto);
         var response = createdItem.ToResponseDto();
-        return CreatedAtAction(nameof(GetById), new {id = createdItem.Id}, response);
+        return CreatedAtAction(nameof(GetById), new { id = createdItem.Id }, response);
     }
 
     [HttpPut]
@@ -64,7 +64,7 @@ public sealed class CartController : ControllerBase
         var userId = 3;
 
         var deletedItem = await _service.DeleteByIdAsync(userId, id);
-        
+
         return NoContent();
     }
 }

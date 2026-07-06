@@ -16,10 +16,11 @@ public sealed class OrderEndpointIntegrationTest : BaseIntegrationTest
             .RuleFor(x => x.OrderStatus, f => f.Lorem.Word())
             .UseSeed(1006);
 
-    public OrderEndpointIntegrationTest(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
+    public OrderEndpointIntegrationTest(IntegrationTestWebAppFactoryFixture factoryFixture,
+        ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
     {
     }
-    
+
     [Fact]
     public async Task Create()
     {
@@ -34,11 +35,12 @@ public sealed class OrderEndpointIntegrationTest : BaseIntegrationTest
         {
             Id = 0,
             OrderAddress = postReq.OrderAddress,
-            OrderStatus = postReq.OrderStatus,
+            OrderStatus = postReq.OrderStatus
         };
 
         // Act
-        var res = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, createDto, cancellationToken: TestContext.Current.CancellationToken);
+        var res = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, createDto,
+            TestContext.Current.CancellationToken);
         var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>();
 
         // Assert
@@ -55,8 +57,7 @@ public sealed class OrderEndpointIntegrationTest : BaseIntegrationTest
         {
             Id = 0,
             OrderAddress = postReq.OrderAddress,
-            OrderStatus = postReq.OrderStatus,
-
+            OrderStatus = postReq.OrderStatus
         };
 
         var postRes = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, postReq);
@@ -85,18 +86,19 @@ public sealed class OrderEndpointIntegrationTest : BaseIntegrationTest
         {
             Id = 0,
             OrderAddress = postReq.OrderAddress,
-            OrderStatus = postReq.OrderStatus,
-
+            OrderStatus = postReq.OrderStatus
         };
 
-        var postRes = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, postReq, cancellationToken: TestContext.Current.CancellationToken);
-        var postResContent = await postRes.Content.ReadFromJsonAsync<OrderResponseDto>(cancellationToken: TestContext.Current.CancellationToken);
+        var postRes = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, postReq,
+            TestContext.Current.CancellationToken);
+        var postResContent =
+            await postRes.Content.ReadFromJsonAsync<OrderResponseDto>(TestContext.Current.CancellationToken);
 
         postRes.StatusCode.Should().Be(HttpStatusCode.Created);
         postResContent.Should().BeEquivalentTo(postReqExpected, opt => opt.Excluding(x => x.Id));
         postReqExpected.Id = postResContent.Id;
 
-        var putReq = new OrderModel()
+        var putReq = new OrderModel
         {
             OrderAddress = "updated",
             OrderStatus = "updated"
@@ -104,8 +106,9 @@ public sealed class OrderEndpointIntegrationTest : BaseIntegrationTest
         putReq.Id = postReqExpected.Id;
 
         // Act
-        var res = await HttpClient.PutAsJsonAsync($"{OrderConstants.OrderEndpoint}/{putReq.Id}", putReq, cancellationToken: TestContext.Current.CancellationToken);
-        var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>(cancellationToken: TestContext.Current.CancellationToken);
+        var res = await HttpClient.PutAsJsonAsync($"{OrderConstants.OrderEndpoint}/{putReq.Id}", putReq,
+            TestContext.Current.CancellationToken);
+        var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>(TestContext.Current.CancellationToken);
 
         // Assert
         res.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -122,7 +125,7 @@ public sealed class OrderEndpointIntegrationTest : BaseIntegrationTest
             Id = 0,
             OrderAddress = postReq.OrderAddress,
             OrderDate = default,
-            OrderStatus = postReq.OrderStatus,
+            OrderStatus = postReq.OrderStatus
         };
 
         var postRes = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, postReq);
@@ -131,12 +134,11 @@ public sealed class OrderEndpointIntegrationTest : BaseIntegrationTest
         postRes.StatusCode.Should().Be(HttpStatusCode.Created);
         postResContent.Should().BeEquivalentTo(postReqExpected, opt => opt.Excluding(x => x.Id));
         postReqExpected.Id = postResContent.Id;
-        
+
         // Act
         var res = await HttpClient.DeleteAsync($"{OrderConstants.OrderEndpoint}/{postReqExpected.Id}");
 
         // Assert
         res.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
-    
 }

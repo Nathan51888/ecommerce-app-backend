@@ -16,7 +16,8 @@ public sealed class GetAll : BaseIntegrationTest
             .RuleFor(x => x.ProductsId, f => f.Random.Number())
             .UseSeed(1000);
 
-    public GetAll(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
+    public GetAll(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(
+        factoryFixture, testOutputHelper)
     {
     }
 
@@ -39,7 +40,7 @@ public sealed class GetAll : BaseIntegrationTest
             {
                 ProductsId = item.ProductsId,
                 ItemAmount = item.ItemAmount,
-                CustomersId = userId,
+                CustomersId = userId
             };
             var postRes = await HttpClient.PostAsJsonAsync(CartConstants.Endpoint, dto);
             var postResContent = await postRes.Content.ReadFromJsonAsync<CartItemResponseDto>();

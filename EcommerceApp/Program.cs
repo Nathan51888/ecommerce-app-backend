@@ -20,7 +20,7 @@ try
     // Add services to the container.
     builder.Services.AddControllers();
     builder.Services.AddOpenApi();
-    
+
     // Problem Details
     builder.Services.AddProblemDetails(options =>
     {
@@ -49,7 +49,7 @@ try
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
             .UseSnakeCaseNamingConvention();
     });
-    
+
     // Identity
     builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>();

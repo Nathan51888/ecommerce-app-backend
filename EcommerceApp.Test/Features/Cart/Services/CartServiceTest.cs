@@ -10,27 +10,27 @@ namespace EcommerceApp.Test.Features.Cart.Services;
 
 public sealed class CartServiceTest
 {
-    private AppDbContext CreateDbContext()
-    {
-        var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("testing")
-            .Options;
-        
-        return new AppDbContext(options);
-    }
-    
-    private readonly AppDbContext _context;
-    private readonly ICartService _sut;
-
     private readonly Faker<CartItemModel> _cartItemGenerator =
         new Faker<CartItemModel>()
             .RuleFor(x => x.ItemAmount, f => f.Random.Number())
             .UseSeed(65465);
 
+    private readonly AppDbContext _context;
+    private readonly ICartService _sut;
+
     public CartServiceTest()
     {
         _context = CreateDbContext();
         _sut = new CartService(_context);
+    }
+
+    private AppDbContext CreateDbContext()
+    {
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase("testing")
+            .Options;
+
+        return new AppDbContext(options);
     }
 
     [Fact]
@@ -39,12 +39,12 @@ public sealed class CartServiceTest
         // Arrange
         var userId = 3;
 
-        var toCreateItemList = new List<CartItemModel>()
+        var toCreateItemList = new List<CartItemModel>
         {
             _cartItemGenerator.Generate(),
             _cartItemGenerator.Generate(),
             _cartItemGenerator.Generate(),
-            _cartItemGenerator.Generate(),
+            _cartItemGenerator.Generate()
         };
         var createdItemList = new List<CartItemModel>();
         foreach (var item in toCreateItemList)
@@ -53,14 +53,14 @@ public sealed class CartServiceTest
             {
                 ProductsId = item.ProductsId,
                 ItemAmount = item.ItemAmount,
-                CustomersId = userId,
+                CustomersId = userId
             };
             var createdItem = await _sut.CreateAsync(userId, dto);
             createdItem.Should().NotBeNull();
             createdItem.Should().BeEquivalentTo(dto);
             createdItemList.Add(createdItem);
         }
-        
+
         // Act
         var items = await _sut.GetAllAsync(userId);
 
@@ -108,7 +108,7 @@ public sealed class CartServiceTest
         {
             ProductsId = cartItem.ProductsId,
             ItemAmount = cartItem.ItemAmount,
-            CustomersId = userId,
+            CustomersId = userId
         };
         var createdItem = await _sut.CreateAsync(userId, dto);
 

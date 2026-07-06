@@ -20,7 +20,8 @@ public sealed class ProductEndpointIntegrationTests : BaseIntegrationTest
             .RuleFor(x => x.StockAmount, f => f.Random.Number())
             .UseSeed(1000);
 
-    public ProductEndpointIntegrationTests(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
+    public ProductEndpointIntegrationTests(IntegrationTestWebAppFactoryFixture factoryFixture,
+        ITestOutputHelper testOutputHelper) : base(factoryFixture, testOutputHelper)
     {
     }
 
@@ -147,7 +148,7 @@ public sealed class ProductEndpointIntegrationTests : BaseIntegrationTest
         postRes.StatusCode.Should().Be(HttpStatusCode.Created);
         postResContent.Should().BeEquivalentTo(postReqExpected, opt => opt.Excluding(x => x.Id));
         postReqExpected.Id = postResContent.Id;
-        
+
         // Act
         var res = await HttpClient.DeleteAsync($"{ProductConstants.ProductEndpoint}/{postReqExpected.Id}");
 
