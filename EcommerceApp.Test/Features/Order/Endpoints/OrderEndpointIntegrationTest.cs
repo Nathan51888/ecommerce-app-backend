@@ -6,7 +6,6 @@ using EcommerceApp.Features.Order.Models;
 using EcommerceApp.Test.Abstractions;
 using FluentAssertions;
 
-[assembly: CaptureConsole]
 namespace EcommerceApp.Test.Features.Order.Endpoints;
 
 public class OrderEndpointIntegrationTest : BaseIntegrationTest

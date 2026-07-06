@@ -1,3 +1,4 @@
+using EcommerceApp.Features.Cart.Models;
 using EcommerceApp.Features.Order.Models;
 using EcommerceApp.Features.Products.Models;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ public class AppDbContext : DbContext
 
     public DbSet<ProductItemModel> ProductItems => Set<ProductItemModel>();
     public DbSet<OrderModel> Orders => Set<OrderModel>();
+    public DbSet<CartItemModel> CartItems => Set<CartItemModel>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

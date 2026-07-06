@@ -19,7 +19,7 @@ public class OrderServiceTest
         return new AppDbContext(options);
     }
 
-    private AppDbContext _context;
+    private readonly AppDbContext _context;
     private readonly IOrderService _sut;
 
     private readonly Faker<OrderModel> _orderGenerator =
