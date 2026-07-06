@@ -55,6 +55,7 @@
         <Folder Include="Features\Cart\Services\"/>
         <Folder Include="Features\Product\Repositories\"/>
         <Folder Include="Features\User\"/>
+        <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>
