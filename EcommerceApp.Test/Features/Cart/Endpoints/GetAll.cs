@@ -13,7 +13,7 @@ public sealed class GetAll : BaseIntegrationTest
     private readonly Faker<CartItemModel> _cartGenerator =
         new Faker<CartItemModel>()
             .RuleFor(x => x.ItemAmount, f => f.Random.Number())
-            .RuleFor(x => x.ProductsId, f => f.Random.Number())
+            .RuleFor(x => x.ProductId, f => f.Random.Number())
             .UseSeed(1000);
 
     public GetAll(IntegrationTestWebAppFactoryFixture factoryFixture, ITestOutputHelper testOutputHelper) : base(
@@ -38,9 +38,9 @@ public sealed class GetAll : BaseIntegrationTest
         {
             var dto = new CartItemCreateRequestDto
             {
-                ProductsId = item.ProductsId,
+                ProductId = item.ProductId,
                 ItemAmount = item.ItemAmount,
-                CustomersId = userId
+                CustomerId = userId
             };
             var postRes = await HttpClient.PostAsJsonAsync(CartConstants.Endpoint, dto);
             var postResContent = await postRes.Content.ReadFromJsonAsync<CartItemResponseDto>();

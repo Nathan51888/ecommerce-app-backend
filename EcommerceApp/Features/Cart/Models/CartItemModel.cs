@@ -2,18 +2,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EcommerceApp.Features.Cart.Models;
 
-[Table("carts_items")]
+[Table("cart_item")]
 public sealed class CartItemModel
 {
     public int Id { get; set; }
 
-    // FK: products
-    public int ProductsId { get; set; }
+    // FK: product
+    public int ProductId { get; set; }
 
     public int ItemAmount { get; set; }
 
-    // FK: customers
-    public int CustomersId { get; set; }
+    // FK: customer
+    public int CustomerId { get; set; }
 
     // public ProductItemModel Products { get; set; }
 }

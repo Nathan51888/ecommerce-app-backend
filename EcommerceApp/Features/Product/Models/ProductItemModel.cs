@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EcommerceApp.Features.Products.Models;
+namespace EcommerceApp.Features.Product.Models;
 
-[Table("products")]
+[Table("product")]
 public sealed class ProductItemModel
 {
     public int Id { get; set; }

@@ -1,7 +1,7 @@
 using EcommerceApp.Data;
+using EcommerceApp.Features.Product.DTOs;
 using EcommerceApp.Features.Product.Mappers;
-using EcommerceApp.Features.Products.DTOs;
-using EcommerceApp.Features.Products.Models;
+using EcommerceApp.Features.Product.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Features.Product.Services;

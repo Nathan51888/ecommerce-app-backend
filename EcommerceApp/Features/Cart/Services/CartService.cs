@@ -17,7 +17,7 @@ public sealed class CartService : ICartService
 
     public async Task<List<CartItemModel>> GetAllAsync(int userId)
     {
-        var items = await _context.CartItems.Where(x => x.CustomersId == userId).ToListAsync();
+        var items = await _context.CartItems.Where(x => x.CustomerId == userId).ToListAsync();
         return items;
     }
 
@@ -30,7 +30,7 @@ public sealed class CartService : ICartService
     public async Task<CartItemModel?> CreateAsync(int userId, CartItemCreateRequestDto requestDto)
     {
         var model = requestDto.ToModel();
-        model.CustomersId = userId;
+        model.CustomerId = userId;
         var createdItem = await _context.CartItems.AddAsync(model);
         await _context.SaveChangesAsync();
 
@@ -40,22 +40,22 @@ public sealed class CartService : ICartService
     public async Task<CartItemModel?> UpdateByIdAsync(int userId, CartItemUpdateRequestDto requestDto)
     {
         var existingItem =
-            await _context.CartItems.FirstOrDefaultAsync(x => x.CustomersId == userId && x.Id == requestDto.Id);
+            await _context.CartItems.FirstOrDefaultAsync(x => x.CustomerId == userId && x.Id == requestDto.Id);
         // if (existingItem == null)
         //     return null;
 
-        existingItem.ProductsId = requestDto.ProductsId;
+        existingItem.ProductId = requestDto.ProductId;
         existingItem.ItemAmount = requestDto.ItemAmount;
         await _context.SaveChangesAsync();
 
         var updatedItem =
-            await _context.CartItems.FirstOrDefaultAsync(x => x.CustomersId == userId && x.Id == requestDto.Id);
+            await _context.CartItems.FirstOrDefaultAsync(x => x.CustomerId == userId && x.Id == requestDto.Id);
         return updatedItem;
     }
 
     public async Task<CartItemModel?> DeleteByIdAsync(int userId, int itemId)
     {
-        var existingItem = await _context.CartItems.FirstOrDefaultAsync(x => x.CustomersId == userId && x.Id == itemId);
+        var existingItem = await _context.CartItems.FirstOrDefaultAsync(x => x.CustomerId == userId && x.Id == itemId);
         if (existingItem == null)
             return null;
 

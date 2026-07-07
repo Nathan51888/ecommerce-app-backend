@@ -1,4 +1,4 @@
-namespace EcommerceApp.Features.Products.DTOs;
+namespace EcommerceApp.Features.Product.DTOs;
 
 public sealed class ProductUpdateRequestDto
 {

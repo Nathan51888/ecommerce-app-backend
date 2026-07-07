@@ -51,9 +51,9 @@ public sealed class CartServiceTest
         {
             var dto = new CartItemCreateRequestDto
             {
-                ProductsId = item.ProductsId,
+                ProductId = item.ProductId,
                 ItemAmount = item.ItemAmount,
-                CustomersId = userId
+                CustomerId = userId
             };
             var createdItem = await _sut.CreateAsync(userId, dto);
             createdItem.Should().NotBeNull();
@@ -79,9 +79,9 @@ public sealed class CartServiceTest
         var createModel = _cartItemGenerator.UseSeed(654).Generate();
         var createDto = new CartItemCreateRequestDto
         {
-            ProductsId = createModel.ProductsId,
+            ProductId = createModel.ProductId,
             ItemAmount = createModel.ItemAmount,
-            CustomersId = userId
+            CustomerId = userId
         };
         var createdItem = await _sut.CreateAsync(userId, createDto);
         createdItem.Should().NotBeNull();
@@ -106,9 +106,9 @@ public sealed class CartServiceTest
         // Act
         var dto = new CartItemCreateRequestDto
         {
-            ProductsId = cartItem.ProductsId,
+            ProductId = cartItem.ProductId,
             ItemAmount = cartItem.ItemAmount,
-            CustomersId = userId
+            CustomerId = userId
         };
         var createdItem = await _sut.CreateAsync(userId, dto);
 
@@ -125,9 +125,9 @@ public sealed class CartServiceTest
         var userId = 3;
         var createDto = new CartItemCreateRequestDto
         {
-            ProductsId = 5,
+            ProductId = 5,
             ItemAmount = 1,
-            CustomersId = userId
+            CustomerId = userId
         };
         var createdItem = await _sut.CreateAsync(userId, createDto);
         createdItem.Should().NotBeNull();
@@ -137,9 +137,9 @@ public sealed class CartServiceTest
         var dto = new CartItemUpdateRequestDto
         {
             Id = createdItem.Id,
-            ProductsId = 6,
+            ProductId = 6,
             ItemAmount = 1,
-            CustomersId = userId
+            CustomerId = userId
         };
         var updatedItem = await _sut.UpdateByIdAsync(userId, dto);
 
@@ -157,9 +157,9 @@ public sealed class CartServiceTest
         var createModel = _cartItemGenerator.UseSeed(654).Generate();
         var createDto = new CartItemCreateRequestDto
         {
-            ProductsId = createModel.ProductsId,
+            ProductId = createModel.ProductId,
             ItemAmount = createModel.ItemAmount,
-            CustomersId = userId
+            CustomerId = userId
         };
         var createdItem = await _sut.CreateAsync(userId, createDto);
         createdItem.Should().NotBeNull();

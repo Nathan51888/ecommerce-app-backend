@@ -1,6 +1,6 @@
 using EcommerceApp.Features.Cart.Models;
 using EcommerceApp.Features.Order.Models;
-using EcommerceApp.Features.Products.Models;
+using EcommerceApp.Features.Product.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

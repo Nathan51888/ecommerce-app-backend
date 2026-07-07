@@ -1,5 +1,5 @@
-using EcommerceApp.Features.Products.DTOs;
-using EcommerceApp.Features.Products.Models;
+using EcommerceApp.Features.Product.DTOs;
+using EcommerceApp.Features.Product.Models;
 
 namespace EcommerceApp.Features.Product.Mappers;
 

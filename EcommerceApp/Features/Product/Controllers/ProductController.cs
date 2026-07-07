@@ -1,6 +1,6 @@
+using EcommerceApp.Features.Product.DTOs;
 using EcommerceApp.Features.Product.Mappers;
 using EcommerceApp.Features.Product.Services;
-using EcommerceApp.Features.Products.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceApp.Features.Product.Controllers;

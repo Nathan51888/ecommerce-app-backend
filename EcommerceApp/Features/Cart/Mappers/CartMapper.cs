@@ -9,9 +9,9 @@ public static class CartMapper
     {
         return new CartItemModel
         {
-            ProductsId = dto.ProductsId,
+            ProductId = dto.ProductId,
             ItemAmount = dto.ItemAmount,
-            CustomersId = dto.CustomersId
+            CustomerId = dto.CustomerId
         };
     }
 
@@ -20,9 +20,9 @@ public static class CartMapper
         return new CartItemResponseDto
         {
             Id = model.Id,
-            ProductsId = model.ProductsId,
+            ProductId = model.ProductId,
             ItemAmount = model.ItemAmount,
-            CustomersId = model.CustomersId
+            CustomerId = model.CustomerId
         };
     }
 }
