@@ -19,6 +19,7 @@ public sealed class CartController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
+        // TODO: Implement ASP.Identity to get user id
         var userId = 3;
 
         var items = await _service.GetAllAsync(userId);
@@ -28,11 +29,11 @@ public sealed class CartController : ControllerBase
 
     [HttpGet]
     [Route("{id:int}")]
-    public async Task<IActionResult> GetById([FromRoute] int itemId)
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var userId = 3;
 
-        var item = await _service.GetByIdAsync(userId, itemId);
+        var item = await _service.GetByIdAsync(userId, id);
         var response = item.ToResponseDto();
         return Ok(response);
     }
@@ -48,6 +49,7 @@ public sealed class CartController : ControllerBase
     }
 
     [HttpPut]
+    [Route("{id:int}")]
     public async Task<IActionResult> UpdateById([FromBody] CartItemUpdateRequestDto requestDto)
     {
         var userId = 3;

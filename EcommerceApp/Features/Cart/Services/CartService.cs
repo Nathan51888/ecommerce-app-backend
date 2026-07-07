@@ -23,13 +23,14 @@ public sealed class CartService : ICartService
 
     public async Task<CartItemModel?> GetByIdAsync(int userId, int itemId)
     {
-        var item = await _context.CartItems.FirstOrDefaultAsync(x => x.CustomersId == userId && x.Id == itemId);
+        var item = await _context.CartItems.FindAsync(itemId);
         return item;
     }
 
     public async Task<CartItemModel?> CreateAsync(int userId, CartItemCreateRequestDto requestDto)
     {
         var model = requestDto.ToModel();
+        model.CustomersId = userId;
         var createdItem = await _context.CartItems.AddAsync(model);
         await _context.SaveChangesAsync();
 
@@ -55,8 +56,8 @@ public sealed class CartService : ICartService
     public async Task<CartItemModel?> DeleteByIdAsync(int userId, int itemId)
     {
         var existingItem = await _context.CartItems.FirstOrDefaultAsync(x => x.CustomersId == userId && x.Id == itemId);
-        // if (existingItem == null)
-        //     return null;
+        if (existingItem == null)
+            return null;
 
         _context.Remove(existingItem);
         await _context.SaveChangesAsync();
