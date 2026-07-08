@@ -1,6 +1,7 @@
 using EcommerceApp.Features.Cart.DTOs;
 using EcommerceApp.Features.Cart.Mappers;
 using EcommerceApp.Features.Cart.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceApp.Features.Cart.Controllers;

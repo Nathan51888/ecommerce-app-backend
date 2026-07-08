@@ -13,6 +13,7 @@
         <PackageReference Include="FakeItEasy" Version="9.0.1"/>
         <PackageReference Include="FluentAssertions" Version="8.10.0"/>
         <PackageReference Include="Meziantou.Extensions.Logging.Xunit.v3" Version="2.0.3"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.9"/>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.9"/>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.9"/>
@@ -55,7 +56,7 @@
         <Folder Include="Features\Cart\Models\"/>
         <Folder Include="Features\Cart\Services\"/>
         <Folder Include="Features\Product\Repositories\"/>
-        <Folder Include="Features\User\"/>
+        <Folder Include="Features\User\Mappers\" />
         <Folder Include="Migrations\"/>
     </ItemGroup>
 
