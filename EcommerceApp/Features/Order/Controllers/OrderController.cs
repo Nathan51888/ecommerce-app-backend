@@ -1,12 +1,13 @@
 using EcommerceApp.Features.Order.DTOs;
 using EcommerceApp.Features.Order.Mappers;
 using EcommerceApp.Features.Order.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceApp.Features.Order.Controllers;
 
 [ApiController]
-[Route("api/orders")]
+[Route("api/admin/orders")]
 public sealed class OrderController : ControllerBase
 {
     private readonly IOrderService _service;

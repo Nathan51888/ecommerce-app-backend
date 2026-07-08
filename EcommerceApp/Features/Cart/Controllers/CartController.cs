@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EcommerceApp.Features.Cart.Controllers;
 
 [ApiController]
-[Route("api/carts")]
+[Route("api/admin/carts")]
 public sealed class CartController : ControllerBase
 {
     private readonly ICartService _service;

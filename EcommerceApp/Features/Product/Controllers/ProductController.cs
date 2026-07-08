@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EcommerceApp.Features.Product.Controllers;
 
 [ApiController]
-[Route("api/products")]
+[Route("api/admin/products")]
 public sealed class ProductController : ControllerBase
 {
     private readonly IProductService _service;

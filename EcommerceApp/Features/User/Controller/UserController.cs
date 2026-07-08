@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EcommerceApp.Features.User.Controller;
 
 [ApiController]
-[Route("api/auth")]
+[Route("api/admin/auth")]
 public class UserController : ControllerBase
 {
     private readonly IUserService _service;
