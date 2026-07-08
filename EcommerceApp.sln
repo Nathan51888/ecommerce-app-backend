@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceApp", "EcommerceApp\EcommerceApp.csproj", "{ECC63A5C-3346-4DFE-B9F2-749C5E83F357}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceApp.Admin", "EcommerceApp.Admin\EcommerceApp.Admin.csproj", "{ECC63A5C-3346-4DFE-B9F2-749C5E83F357}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{59358927-B7F7-409D-ABA0-A14314C2507D}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceApp.Test", "EcommerceApp.Test\EcommerceApp.Test.csproj", "{F80BC8E3-5895-4850-8D81-C7712AB21AE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceApp.Admin.Test", "EcommerceApp.Admin.Test\EcommerceApp.Admin.Test.csproj", "{F80BC8E3-5895-4850-8D81-C7712AB21AE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
