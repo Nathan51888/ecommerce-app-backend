@@ -1,4 +1,5 @@
 using EcommerceApp.Features.Cart.Models;
+using EcommerceApp.Features.Category.Models;
 using EcommerceApp.Features.Order.Models;
 using EcommerceApp.Features.Product.Models;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,7 @@ public sealed class AppDbContext : IdentityDbContext
     }
 
     public DbSet<ProductItemModel> ProductItems => Set<ProductItemModel>();
+    public DbSet<CategoryModel> Categories => Set<CategoryModel>();
     public DbSet<OrderModel> Orders => Set<OrderModel>();
     public DbSet<CartItemModel> CartItems => Set<CartItemModel>();
 
