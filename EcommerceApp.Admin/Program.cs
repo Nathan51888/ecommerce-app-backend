@@ -1,6 +1,7 @@
 using System.Text;
 using EcommerceApp.Data;
 using EcommerceApp.Features.Cart.Services;
+using EcommerceApp.Features.Category.Services;
 using EcommerceApp.Features.Order.Services;
 using EcommerceApp.Features.Product.Services;
 using EcommerceApp.Features.User.Services;
@@ -87,6 +88,7 @@ try
 
     // Services
     builder.Services.AddScoped<IProductService, ProductService>();
+    builder.Services.AddScoped<ICategoryService, CategoryService>();
     builder.Services.AddScoped<IOrderService, OrderService>();
     builder.Services.AddScoped<ICartService, CartService>();
     builder.Services.AddScoped<IUserService, UserService>();

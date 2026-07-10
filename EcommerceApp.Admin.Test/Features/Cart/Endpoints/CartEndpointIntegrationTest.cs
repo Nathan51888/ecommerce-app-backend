@@ -107,6 +107,7 @@ public sealed class CartEndpointIntegrationTest : BaseIntegrationTest
 
     private async Task<CartItemResponseDto> CreateCartItem(int userId)
     {
+        // Arrange
         var postReq = _cartItemGenerator.Generate();
         var postReqExpected = new CartItemResponseDto
         {
@@ -116,7 +117,10 @@ public sealed class CartEndpointIntegrationTest : BaseIntegrationTest
             CustomerId = userId
         };
 
+        // Act
         var postRes = await HttpClient.PostAsJsonAsync(CartConstants.Endpoint, postReq);
+        
+        // Assert
         postRes.StatusCode.Should().Be(HttpStatusCode.Created);
         var postResContent = await postRes.Content.ReadFromJsonAsync<CartItemResponseDto>();
         postResContent.Should().BeEquivalentTo(postReqExpected, opt => opt.Excluding(x => x.Id));
