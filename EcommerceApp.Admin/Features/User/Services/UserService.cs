@@ -9,8 +9,8 @@ namespace EcommerceApp.Features.User.Services;
 
 public class UserService : IUserService
 {
-    private readonly UserManager<IdentityUser> _userManager;
     private readonly IConfiguration _config;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public UserService(UserManager<IdentityUser> userManager, IConfiguration config)
     {
@@ -26,7 +26,7 @@ public class UserService : IUserService
 
         return await _userManager.CheckPasswordAsync(identityUser, requestDto.Password);
     }
-    
+
     public async Task<bool> RegisterUser(RegisterUserRequestDto requestDto)
     {
         var identityUser = new IdentityUser
@@ -43,23 +43,23 @@ public class UserService : IUserService
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Email, requestDto.Username),
-            new Claim(ClaimTypes.Role, "Admin"),
+            new(ClaimTypes.Email, requestDto.Username),
+            new(ClaimTypes.Role, "Admin")
         };
-        
-        var securityKey =  new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("Jwt:Key").Value!));
-        
+
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("Jwt:Key").Value!));
+
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
-        
+
         var securityToken = new JwtSecurityToken(
             claims: claims,
             expires: DateTime.Now.AddMinutes(60),
             issuer: _config.GetSection("Jwt:Issuer").Value,
             audience: _config.GetSection("Jwt:Audience").Value,
             signingCredentials: signingCredentials
-            );
-        
-        string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
+        );
+
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
         return tokenString;
     }
 }

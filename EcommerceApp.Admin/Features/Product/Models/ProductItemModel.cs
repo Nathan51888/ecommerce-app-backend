@@ -11,5 +11,9 @@ public sealed class ProductItemModel
     public int PriceRegular { get; set; }
     public int PriceDiscount { get; set; }
     public int StockAmount { get; set; }
+
     public string Category { get; set; } = string.Empty;
+    // FK: category
+    // public int CategoryId { get; set; }
+    // public CategoryModel Category { get; set; }
 }

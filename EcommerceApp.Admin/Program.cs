@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Scalar.AspNetCore;
 using Serilog;
+using Serilog.Events;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -115,11 +116,11 @@ try
         options.GetLevel = (httpContext, elapsed, ex) =>
         {
             if (httpContext.Request.Path.StartsWithSegments("/health"))
-                return Serilog.Events.LogEventLevel.Verbose;
+                return LogEventLevel.Verbose;
 
             return elapsed > 500
-                ? Serilog.Events.LogEventLevel.Warning
-                : Serilog.Events.LogEventLevel.Information;
+                ? LogEventLevel.Warning
+                : LogEventLevel.Information;
         };
     });
 

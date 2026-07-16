@@ -9,12 +9,12 @@ namespace EcommerceApp.Features.Category.Services;
 public class CategoryService : ICategoryService
 {
     private readonly AppDbContext _context;
-    
+
     public CategoryService(AppDbContext context)
     {
         _context = context;
     }
-    
+
     public async Task<List<CategoryModel>> GetAllAsync()
     {
         var items = await _context.Categories.ToListAsync();

@@ -9,10 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceApp.Admin.Test", "EcommerceApp.Admin.Test\EcommerceApp.Admin.Test.csproj", "{F80BC8E3-5895-4850-8D81-C7712AB21AE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceApp.Customer", "EcommerceApp.Customer\EcommerceApp.Customer.csproj", "{3EA78020-20B9-4A57-9DEA-668132409610}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceApp.Customer.Test", "EcommerceApp.Customer.Test\EcommerceApp.Customer.Test.csproj", "{6179F7A0-A320-48BC-AC09-22F1162E9B4A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,13 +23,5 @@ Global
 		{F80BC8E3-5895-4850-8D81-C7712AB21AE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F80BC8E3-5895-4850-8D81-C7712AB21AE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F80BC8E3-5895-4850-8D81-C7712AB21AE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EA78020-20B9-4A57-9DEA-668132409610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EA78020-20B9-4A57-9DEA-668132409610}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EA78020-20B9-4A57-9DEA-668132409610}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EA78020-20B9-4A57-9DEA-668132409610}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6179F7A0-A320-48BC-AC09-22F1162E9B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6179F7A0-A320-48BC-AC09-22F1162E9B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6179F7A0-A320-48BC-AC09-22F1162E9B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6179F7A0-A320-48BC-AC09-22F1162E9B4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

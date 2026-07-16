@@ -20,7 +20,7 @@ public static class CategoryMapper
         {
             Id = model.Id,
             Name = model.Name,
-            Description = model.Description,
+            Description = model.Description
         };
     }
 }

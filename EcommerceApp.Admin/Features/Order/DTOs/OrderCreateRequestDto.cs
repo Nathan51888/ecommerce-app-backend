@@ -2,8 +2,6 @@ namespace EcommerceApp.Features.Order.DTOs;
 
 public sealed class OrderCreateRequestDto
 {
-    public string OrderAddress { get; set; } = string.Empty;
-    public DateTimeOffset OrderDate { get; set; }
     public enum OrderStatusEnum
     {
         Pending,
@@ -11,8 +9,11 @@ public sealed class OrderCreateRequestDto
         Shipping,
         Delivered,
         Refunded,
-        Failed,
+        Failed
     }
+
+    public string OrderAddress { get; set; } = string.Empty;
+    public DateTimeOffset OrderDate { get; set; }
 
     public string OrderStatus { get; set; } = string.Empty;
 }
