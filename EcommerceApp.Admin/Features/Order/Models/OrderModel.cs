@@ -6,7 +6,12 @@ namespace EcommerceApp.Features.Order.Models;
 public sealed class OrderModel
 {
     public int Id { get; set; }
+
+    // FK: customer
+    // public string CustomerId { get; set; } = string.Empty;
     public string OrderAddress { get; set; } = string.Empty;
-    public DateTime OrderDate { get; set; }
+
+    public DateTimeOffset OrderDate { get; set; }
+
     public string OrderStatus { get; set; } = string.Empty;
 }

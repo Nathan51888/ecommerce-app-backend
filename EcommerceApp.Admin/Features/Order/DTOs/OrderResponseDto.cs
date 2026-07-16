@@ -4,6 +4,6 @@ public sealed class OrderResponseDto
 {
     public int Id { get; set; }
     public string OrderAddress { get; set; } = string.Empty;
-    public DateTime OrderDate { get; set; }
+    public DateTimeOffset OrderDate { get; set; }
     public string OrderStatus { get; set; } = string.Empty;
 }

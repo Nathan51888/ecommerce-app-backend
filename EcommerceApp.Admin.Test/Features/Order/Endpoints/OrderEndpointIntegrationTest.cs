@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Bogus;
 using EcommerceApp.Admin.Test.Abstractions;
+using EcommerceApp.Extensions;
 using EcommerceApp.Features.Order.DTOs;
 using EcommerceApp.Features.Order.Models;
 using FluentAssertions;
@@ -13,6 +14,7 @@ public sealed class OrderEndpointIntegrationTest : BaseIntegrationTest
     private readonly Faker<OrderModel> _orderGenerator =
         new Faker<OrderModel>()
             .RuleFor(x => x.OrderAddress, f => f.Address.FullAddress())
+            .RuleFor(x => x.OrderDate, f => f.Date.RecentOffset().ToUniversalTime().TruncateToPostgresPrecision())
             .RuleFor(x => x.OrderStatus, f => f.Lorem.Word())
             .UseSeed(1006);
 
@@ -25,93 +27,67 @@ public sealed class OrderEndpointIntegrationTest : BaseIntegrationTest
     public async Task Create()
     {
         // Arrange
-        var postReq = _orderGenerator.Generate();
+        var generatedModel = _orderGenerator.Generate();
         var createDto = new OrderCreateRequestDto
         {
-            OrderAddress = postReq.OrderAddress,
-            OrderStatus = postReq.OrderStatus
+            OrderAddress = generatedModel.OrderAddress,
+            OrderDate = generatedModel.OrderDate,
+            OrderStatus = generatedModel.OrderStatus
         };
         var expected = new OrderResponseDto
         {
             Id = 0,
-            OrderAddress = postReq.OrderAddress,
-            OrderStatus = postReq.OrderStatus
+            OrderAddress = generatedModel.OrderAddress,
+            OrderDate = generatedModel.OrderDate,
+            OrderStatus = generatedModel.OrderStatus
         };
 
         // Act
         var res = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, createDto,
             TestContext.Current.CancellationToken);
-        var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>();
+        var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>(TestContext.Current.CancellationToken);
 
         // Assert
         res.StatusCode.Should().Be(HttpStatusCode.Created);
-        resContent.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.Id));
+        resContent.Should().BeEquivalentTo(expected, opt => { return opt.Excluding(x => x.Id); });
     }
 
     [Fact]
     public async Task GetById()
     {
         // Arrange
-        var postReq = _orderGenerator.Generate();
-        var expected = new OrderResponseDto
-        {
-            Id = 0,
-            OrderAddress = postReq.OrderAddress,
-            OrderStatus = postReq.OrderStatus
-        };
-
-        var postRes = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, postReq);
-        var postResContent = await postRes.Content.ReadFromJsonAsync<OrderResponseDto>();
-
-        postRes.StatusCode.Should().Be(HttpStatusCode.Created);
-        postResContent.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.Id));
-        expected.Id = postResContent.Id;
-
+        var createdItem = await CreateOrder();
 
         // Act
-        var res = await HttpClient.GetAsync($"{OrderConstants.OrderEndpoint}/{expected.Id}");
-        var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>();
+        var res = await HttpClient.GetAsync($"{OrderConstants.OrderEndpoint}/{createdItem.Id}",
+            TestContext.Current.CancellationToken);
 
         // Assert
         res.StatusCode.Should().Be(HttpStatusCode.OK);
-        resContent.Should().BeEquivalentTo(expected);
+        var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>(TestContext.Current.CancellationToken);
+        resContent.Should().BeEquivalentTo(createdItem);
     }
 
     [Fact]
     public async Task UpdateById()
     {
         // Arrange
-        var postReq = _orderGenerator.Generate();
-        var postReqExpected = new OrderResponseDto
-        {
-            Id = 0,
-            OrderAddress = postReq.OrderAddress,
-            OrderStatus = postReq.OrderStatus
-        };
-
-        var postRes = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, postReq,
-            TestContext.Current.CancellationToken);
-        var postResContent =
-            await postRes.Content.ReadFromJsonAsync<OrderResponseDto>(TestContext.Current.CancellationToken);
-
-        postRes.StatusCode.Should().Be(HttpStatusCode.Created);
-        postResContent.Should().BeEquivalentTo(postReqExpected, opt => opt.Excluding(x => x.Id));
-        postReqExpected.Id = postResContent.Id;
-
+        var createdItem = await CreateOrder();
         var putReq = new OrderModel
         {
+            Id = createdItem.Id,
             OrderAddress = "updated",
+            OrderDate = DateTimeOffset.UtcNow,
             OrderStatus = "updated"
         };
-        putReq.Id = postReqExpected.Id;
 
         // Act
         var res = await HttpClient.PutAsJsonAsync($"{OrderConstants.OrderEndpoint}/{putReq.Id}", putReq,
             TestContext.Current.CancellationToken);
-        var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>(TestContext.Current.CancellationToken);
 
         // Assert
         res.StatusCode.Should().Be(HttpStatusCode.OK);
+        var resContent = await res.Content.ReadFromJsonAsync<OrderResponseDto>(TestContext.Current.CancellationToken);
         resContent.Should().BeEquivalentTo(putReq);
     }
 
@@ -119,26 +95,42 @@ public sealed class OrderEndpointIntegrationTest : BaseIntegrationTest
     public async Task DeleteById()
     {
         // Arrange
-        var postReq = _orderGenerator.Generate();
-        var postReqExpected = new OrderResponseDto
-        {
-            Id = 0,
-            OrderAddress = postReq.OrderAddress,
-            OrderDate = default,
-            OrderStatus = postReq.OrderStatus
-        };
-
-        var postRes = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, postReq);
-        var postResContent = await postRes.Content.ReadFromJsonAsync<OrderResponseDto>();
-
-        postRes.StatusCode.Should().Be(HttpStatusCode.Created);
-        postResContent.Should().BeEquivalentTo(postReqExpected, opt => opt.Excluding(x => x.Id));
-        postReqExpected.Id = postResContent.Id;
+        var createdItem = await CreateOrder();
 
         // Act
-        var res = await HttpClient.DeleteAsync($"{OrderConstants.OrderEndpoint}/{postReqExpected.Id}");
+        var res = await HttpClient.DeleteAsync($"{OrderConstants.OrderEndpoint}/{createdItem.Id}",
+            TestContext.Current.CancellationToken);
 
         // Assert
         res.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+
+    private async Task<OrderResponseDto> CreateOrder()
+    {
+        // Arrange
+        var generatedModel = _orderGenerator.Generate();
+        var createDto = new OrderCreateRequestDto
+        {
+            OrderAddress = generatedModel.OrderAddress,
+            OrderDate = generatedModel.OrderDate,
+            OrderStatus = generatedModel.OrderStatus
+        };
+        var expected = new OrderResponseDto
+        {
+            Id = 0,
+            OrderAddress = generatedModel.OrderAddress,
+            OrderDate = generatedModel.OrderDate,
+            OrderStatus = generatedModel.OrderStatus
+        };
+
+        // Act
+        var postRes = await HttpClient.PostAsJsonAsync(OrderConstants.OrderEndpoint, createDto);
+
+        // Assert
+        postRes.StatusCode.Should().Be(HttpStatusCode.Created);
+        var postResContent = await postRes.Content.ReadFromJsonAsync<OrderResponseDto>();
+        postResContent.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.Id));
+
+        return postResContent;
     }
 }

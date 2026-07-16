@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Bogus;
 using EcommerceApp.Admin.Test.Abstractions;
+using EcommerceApp.Extensions;
 using EcommerceApp.Features.Order.DTOs;
 using EcommerceApp.Features.Order.Models;
 using FluentAssertions;
@@ -13,6 +14,7 @@ public sealed class GetAll : BaseIntegrationTest
     private readonly Faker<OrderModel> _orderGenerator =
         new Faker<OrderModel>()
             .RuleFor(x => x.OrderAddress, f => f.Address.FullAddress())
+            .RuleFor(x => x.OrderDate, f => f.Date.RecentOffset().ToUniversalTime().TruncateToPostgresPrecision())
             .RuleFor(x => x.OrderStatus, f => f.Lorem.Word())
             .UseSeed(1000);
 

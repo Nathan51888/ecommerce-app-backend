@@ -14,7 +14,7 @@ public sealed class OrderServiceTest
 
     private readonly Faker<OrderModel> _orderGenerator =
         new Faker<OrderModel>()
-            .RuleFor(x => x.OrderDate, f => f.Date.Soon())
+            .RuleFor(x => x.OrderDate, f => f.Date.SoonOffset().ToUniversalTime())
             .RuleFor(x => x.OrderStatus, f => f.Lorem.Word())
             .RuleFor(x => x.OrderAddress, f => f.Address.FullAddress())
             .UseSeed(3210);
@@ -75,16 +75,7 @@ public sealed class OrderServiceTest
     public async Task GetById()
     {
         // Arrange
-        var createModel = _orderGenerator.UseSeed(654).Generate();
-        var createDto = new OrderCreateRequestDto
-        {
-            OrderAddress = createModel.OrderAddress,
-            OrderDate = createModel.OrderDate,
-            OrderStatus = createModel.OrderStatus
-        };
-        var createdItem = await _sut.CreateAsync(createDto);
-        createdItem.Should().NotBeNull();
-        createdItem.Should().BeEquivalentTo(createModel, opt => opt.Excluding(x => x.Id));
+        var createdItem = await CreateOrder();
 
         // Act
         var item = await _sut.GetByIdAsync(createdItem.Id);
@@ -118,16 +109,7 @@ public sealed class OrderServiceTest
     public async Task UpdateById()
     {
         // Arrange
-        var createModel = _orderGenerator.UseSeed(654).Generate();
-        var createDto = new OrderCreateRequestDto
-        {
-            OrderAddress = createModel.OrderAddress,
-            OrderDate = createModel.OrderDate,
-            OrderStatus = createModel.OrderStatus
-        };
-        var createdItem = await _sut.CreateAsync(createDto);
-        createdItem.Should().NotBeNull();
-        createdItem.Should().BeEquivalentTo(createModel, opt => opt.Excluding(x => x.Id));
+        var createdItem = await CreateOrder();
 
         // Act
         var dto = new OrderUpdateRequestDto
@@ -148,16 +130,7 @@ public sealed class OrderServiceTest
     public async Task DeleteById()
     {
         // Arrange
-        var createModel = _orderGenerator.UseSeed(654).Generate();
-        var createDto = new OrderCreateRequestDto
-        {
-            OrderAddress = createModel.OrderAddress,
-            OrderDate = createModel.OrderDate,
-            OrderStatus = createModel.OrderStatus
-        };
-        var createdItem = await _sut.CreateAsync(createDto);
-        createdItem.Should().NotBeNull();
-        createdItem.Should().BeEquivalentTo(createModel, opt => opt.Excluding(x => x.Id));
+        var createdItem = await CreateOrder();
 
         // Act
         var deletedItem = await _sut.DeleteByIdAsync(createdItem.Id);
@@ -165,5 +138,26 @@ public sealed class OrderServiceTest
         // Assert
         deletedItem.Should().NotBeNull();
         deletedItem.Should().BeEquivalentTo(createdItem);
+    }
+
+    private async Task<OrderModel> CreateOrder()
+    {
+        // Arrange
+        var generatedModel = _orderGenerator.UseSeed(654).Generate();
+        var createDto = new OrderCreateRequestDto
+        {
+            OrderAddress = generatedModel.OrderAddress,
+            OrderDate = generatedModel.OrderDate,
+            OrderStatus = generatedModel.OrderStatus
+        };
+        
+        // Act
+        var createdItem = await _sut.CreateAsync(createDto);
+        
+        // Assert
+        createdItem.Should().NotBeNull();
+        createdItem.Should().BeEquivalentTo(generatedModel, opt => opt.Excluding(x => x.Id));
+
+        return createdItem;
     }
 }

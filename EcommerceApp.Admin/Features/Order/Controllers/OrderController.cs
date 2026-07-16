@@ -1,7 +1,6 @@
 using EcommerceApp.Features.Order.DTOs;
 using EcommerceApp.Features.Order.Mappers;
 using EcommerceApp.Features.Order.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceApp.Features.Order.Controllers;
@@ -10,11 +9,13 @@ namespace EcommerceApp.Features.Order.Controllers;
 [Route("api/admin/orders")]
 public sealed class OrderController : ControllerBase
 {
+    private readonly ILogger<OrderController> _logger;
     private readonly IOrderService _service;
 
-    public OrderController(IOrderService service)
+    public OrderController(IOrderService service, ILogger<OrderController> logger)
     {
         _service = service;
+        _logger = logger;
     }
 
     [HttpGet]
